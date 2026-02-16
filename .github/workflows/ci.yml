@@ -56,7 +56,7 @@ jobs:
             echo "Build & restart services..."
             docker compose -f deployments/docker.compose.dev.yml up --build -d
 
-            echo  Cleanup unused images..."
+            echo  "Cleanup unused images..."
             docker image prune -f
 
             echo "Staging deploy successful!"
