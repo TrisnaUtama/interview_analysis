@@ -1,0 +1,26 @@
+# Env files
+.env
+.env.dev
+.env.production
+.env.local
+apps/web/.env
+apps/web/.env.dev
+apps/web/.env.prod
+
+# Go
+apps/api/tmp/
+apps/api/bin/
+
+# Python
+apps/ai/__pycache__/
+apps/ai/.venv/
+apps/ai/*.pyc
+apps/ai/.python-version
+
+# Node
+apps/web/node_modules/
+apps/web/dist/
+
+# OS
+.DS_Store
+Thumbs.db

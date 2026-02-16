@@ -1,0 +1,90 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - trunk
+      - staging
+
+jobs:
+  test-api:
+    name: Test Go API
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache-dependency-path: apps/api/go.sum
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build check
+        run: go build ./cmd/api/main.go
+
+      - name: Run tests
+        run: go test ./... -v
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: test-api
+    if: github.ref == 'refs/heads/staging'
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_PATH }}
+
+            echo "Pull latest code..."
+            git pull origin staging
+
+            echo "Build & restart services..."
+            docker compose -f deployments/docker.compose.dev.yml up --build -d
+
+            echo  Cleanup unused images..."
+            docker image prune -f
+
+            echo "Staging deploy successful!"
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: test-api
+    if: github.ref == 'refs/heads/trunk'
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.APP_PATH }}
+
+            echo "Pull latest code..."
+            git pull origin trunk
+
+            echo "Build & restart services..."
+            docker compose -f deployments/docker.compose.prod.yml up --build -d
+
+            echo "Cleanup unused images..."
+            docker image prune -f
+
+            echo "Production deploy successful!"

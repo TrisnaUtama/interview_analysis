@@ -1,0 +1,47 @@
+name: ai-interview-dev
+
+services:
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    container_name: ai_interview_api_dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:21001:21001"    
+    env_file:
+      - ../.env.dev
+    networks:
+      - ai_interview_network
+
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+    container_name: ai_interview_web_dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:23001:80"      
+    networks:
+      - ai_interview_network
+    depends_on:
+      - api
+
+  ai:
+    build:
+      context: ../apps/ai
+      dockerfile: Dockerfile
+    container_name: ai_interview_ai_dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:22001:22001"     
+    env_file:
+      - ../.env.dev
+    networks:
+      - ai_interview_network
+    depends_on:
+      - api
+
+networks:
+  ai_interview_network:
+    driver: bridge
