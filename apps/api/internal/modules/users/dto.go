@@ -1,3 +1,3 @@
-package jobs
+package users
 
 // Request & Response DTOs

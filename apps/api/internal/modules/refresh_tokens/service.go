@@ -1,4 +1,4 @@
-package jobs
+package refresh_tokens
 
 import "ai-interview-api/internal/configs"
 

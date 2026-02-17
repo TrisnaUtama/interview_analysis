@@ -10,10 +10,11 @@ import (
 
 type Setting struct {
 	App struct {
-		Env  string
-		Port int
-		Url  string
-		Key  string
+		Env         string
+		Port        int
+		Url         string
+		Key         string
+		FrontEndUrl string
 	}
 	Database struct {
 		Host     string
@@ -24,6 +25,11 @@ type Setting struct {
 		Schema   string
 		ConnStr  string
 	}
+	OAUTH struct {
+		ClientId     string
+		ClientSecret string
+		RedirectUrl  string
+	}
 }
 
 func NewSetting() (*Setting, error) {
@@ -32,6 +38,7 @@ func NewSetting() (*Setting, error) {
 	s.App.Env = os.Getenv("ENV")
 	s.App.Url = os.Getenv("BASE_URL")
 	s.App.Key = os.Getenv("APP_KEY")
+	s.App.FrontEndUrl = os.Getenv("FRONT_END_URL")
 
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
@@ -55,6 +62,10 @@ func NewSetting() (*Setting, error) {
 		"host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=UTC",
 		s.Database.Host, s.Database.User, s.Database.Password, s.Database.Name, s.Database.Port,
 	)
+
+	s.OAUTH.ClientId = os.Getenv("CLIENT_ID")
+	s.OAUTH.ClientSecret = os.Getenv("CLIENT_SECRET")
+	s.OAUTH.RedirectUrl = os.Getenv("GOOGLE_REDIRECT_URI")
 
 	return s, nil
 }

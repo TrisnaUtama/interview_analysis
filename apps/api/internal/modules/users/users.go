@@ -1,4 +1,4 @@
-package jobs
+package users
 
 import (
 	"github.com/go-chi/chi/v5"
@@ -12,7 +12,7 @@ func Init(r chi.Router, db *pgxpool.Pool, cfg *configs.Setting) {
 	service := NewService(repo, cfg)
 	handler := NewHandler(service)
 
-	r.Route("/jobs", func(r chi.Router) {
+	r.Route("/users", func(r chi.Router) {
 		_ = handler
 	})
 }

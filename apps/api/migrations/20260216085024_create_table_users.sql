@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     role          user_role_enum NOT NULL DEFAULT 'user',
     created_at    TIMESTAMPTZ DEFAULT NOW(),
     updated_at    TIMESTAMPTZ DEFAULT NOW(),
+    deleted_at    TIMESTAMPTZ NULL,
 
     UNIQUE (provider, provider_id)
 );
