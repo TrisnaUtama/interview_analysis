@@ -1,0 +1,15 @@
+{
+    "validation.required"        : "{{.Field}} wajib diisi",
+    "validation.email"           : "{{.Field}} harus berupa email yang valid",
+    "validation.min"             : "{{.Field}} minimal {{.Param}} karakter",
+    "error.unauthorized"         : "Tidak terautentikasi",
+    "error.forbidden"            : "Akses ditolak",
+    "error.not_found"            : "{{.Resource}} tidak ditemukan",
+    "error.internal"             : "Terjadi kesalahan pada server",
+    "error.invalid_request"      : "Request tidak valid",
+    "auth.login_success"         : "Login berhasil",
+    "auth.logout_success"        : "Logout berhasil",
+    "auth.token_refreshed"       : "Token berhasil diperbarui",
+    "auth.invalid_token"         : "Token tidak valid atau sudah kadaluarsa",
+    "auth.me"                    : "Berhasil mendapatkan data user"
+}

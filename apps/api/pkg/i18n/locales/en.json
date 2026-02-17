@@ -1,0 +1,15 @@
+{
+    "validation.required"        : "{{.Field}} is required",
+    "validation.email"           : "{{.Field}} must be a valid email",
+    "validation.min"             : "{{.Field}} must be at least {{.Param}} characters",
+    "error.unauthorized"         : "Unauthorized",
+    "error.forbidden"            : "Forbidden",
+    "error.not_found"            : "{{.Resource}} not found",
+    "error.internal"             : "Internal server error",
+    "error.invalid_request"      : "Invalid request",
+    "auth.login_success"         : "Login successful",
+    "auth.logout_success"        : "Logout successful",
+    "auth.token_refreshed"       : "Token refreshed",
+    "auth.invalid_token"         : "Invalid or expired token",
+    "auth.me"                    : "Success geting data user"
+}

@@ -1,0 +1,42 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AI Interview API",
+    "version": "1.0.0",
+    "description": "API documentation for AI Interview platform"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:21001",
+      "description": "Local development"
+    },
+    {
+      "url": "https://stg-interview.trisnautama.site",
+      "description": "Staging"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "CookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "access_token"
+      }
+    },
+    "schemas": {
+      "Response": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data":    { "type": "object" },
+          "error":   { "type": "string" }
+        }
+      }
+    }
+  },
+  "paths": {},
+  "tags": [
+    { "name": "Auth",      "description": "Authentication endpoints" }
+  ]
+}

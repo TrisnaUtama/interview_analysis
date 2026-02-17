@@ -1,4 +1,4 @@
-package jobs
+package users
 
 import "ai-interview-api/internal/configs"
 
