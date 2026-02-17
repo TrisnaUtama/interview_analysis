@@ -16,8 +16,10 @@ WORKDIR /app
 
 RUN apk --no-cache add ca-certificates tzdata
 COPY --from=builder /app/bin/api .
-
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/pkg/i18n ./pkg/i18n
+COPY --from=builder /app/pkg/docs ./pkg/docs
+
 EXPOSE ${PORT}
 
 CMD ["./api"]

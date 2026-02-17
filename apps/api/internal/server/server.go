@@ -7,6 +7,7 @@ import (
 	"ai-interview-api/internal/configs"
 	"ai-interview-api/internal/database"
 	"ai-interview-api/internal/modules/auth"
+	"ai-interview-api/internal/modules/jobs"
 	"ai-interview-api/pkg/docs"
 	"ai-interview-api/pkg/logger"
 
@@ -90,6 +91,7 @@ func (s *Server) setupRoutes(db *database.PostgresDB) {
 
 	s.router.Route("/api/v1", func(r chi.Router) {
 		auth.Init(r, db.GetPool(), s.cfg)
+		jobs.Init(r, db.GetPool(), s.cfg)
 	})
 }
 

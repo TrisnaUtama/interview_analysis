@@ -3,6 +3,7 @@ package auth
 import (
 	"net/http"
 
+	"ai-interview-api/internal/middlewares"
 	"ai-interview-api/pkg/logger"
 	"ai-interview-api/pkg/response"
 
@@ -19,7 +20,7 @@ func NewHandler(service Service) *Handler {
 
 // Get /api/v1/auth/me
 func (h *Handler) Me(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("UserId").(string)
+	userID, ok := r.Context().Value(middlewares.UserIDKey).(string)
 	if !ok || userID == "" {
 		response.Error(w, r, http.StatusUnauthorized, "error.unauthorized")
 		return
