@@ -45,3 +45,22 @@ func ValidationError(w http.ResponseWriter, r *http.Request, errors map[string]s
 		Data:    errors,
 	})
 }
+
+type PaginationMeta struct {
+	Page       int `json:"page"`
+	Limit      int `json:"limit"`
+	TotalItems int `json:"total_items"`
+	TotalPages int `json:"total_pages"`
+}
+
+type PaginatedResponse struct {
+	Items any            `json:"items"`
+	Meta  PaginationMeta `json:"meta"`
+}
+
+func Paginated(w http.ResponseWriter, r *http.Request, statusCode int, msgKey string, items any, meta PaginationMeta) {
+	Success(w, r, statusCode, msgKey, PaginatedResponse{
+		Items: items,
+		Meta:  meta,
+	})
+}

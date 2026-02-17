@@ -1,0 +1,328 @@
+{
+  "paths": {
+    "/api/v1/jobs": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get All Jobs",
+        "description": "Get paginated list of jobs with descriptions and keywords",
+        "security": [{ "CookieAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated jobs list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Response" },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "items": {
+                              "type": "array",
+                              "items": { "$ref": "#/components/schemas/JobResponse" }
+                            },
+                            "meta": { "$ref": "#/components/schemas/PaginationMeta" }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Jobs"],
+        "summary": "Create Job",
+        "description": "Create job with description. Use source_type 'manual' with raw_text, or 'url' with source_url. Analysis will run async.",
+        "security": [{ "CookieAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateJobRequest" },
+              "examples": {
+                "manual": {
+                  "summary": "Manual input",
+                  "value": {
+                    "company_name": "Google",
+                    "position": "Backend Engineer",
+                    "source_type": "manual",
+                    "raw_text": "We are looking for a Backend Engineer with 3+ years experience in Go..."
+                  }
+                },
+                "url": {
+                  "summary": "From URL",
+                  "value": {
+                    "company_name": "Google",
+                    "position": "Backend Engineer",
+                    "source_type": "url",
+                    "source_url": "https://jobs.google.com/backend-engineer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Job created, analysis pending",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Response" },
+                    {
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/JobResponse" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing required fields or invalid source_type",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{id}": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get Job Detail",
+        "security": [{ "CookieAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Response" },
+                    {
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/JobResponse" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "404": {
+            "description": "Job not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Jobs"],
+        "summary": "Delete Job",
+        "description": "Soft delete job by id",
+        "security": [{ "CookieAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job deleted",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "404": {
+            "description": "Job not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateJobRequest": {
+        "type": "object",
+        "required": ["company_name", "position", "source_type"],
+        "properties": {
+          "company_name": {
+            "type": "string",
+            "example": "Google"
+          },
+          "position": {
+            "type": "string",
+            "example": "Backend Engineer"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": ["manual", "url"],
+            "example": "manual"
+          },
+          "raw_text": {
+            "type": "string",
+            "description": "Required if source_type is manual",
+            "example": "We are looking for a Backend Engineer..."
+          },
+          "source_url": {
+            "type": "string",
+            "description": "Required if source_type is url",
+            "example": "https://jobs.example.com/backend-engineer"
+          }
+        }
+      },
+      "JobDescriptionResponse": {
+        "type": "object",
+        "properties": {
+          "id":              { "type": "string", "format": "uuid" },
+          "source_type":     { "type": "string", "enum": ["manual", "url"], "example": "manual" },
+          "source_url":      { "type": "string", "example": "https://..." },
+          "raw_text":        { "type": "string" },
+          "parsed_text":     { "type": "string" },
+          "analysis_status": { "type": "string", "enum": ["pending", "processing", "completed", "failed"], "example": "pending" }
+        }
+      },
+      "JobKeywordResponse": {
+        "type": "object",
+        "properties": {
+          "id":      { "type": "string", "format": "uuid" },
+          "keyword": { "type": "string", "example": "golang" },
+          "weight":  { "type": "number", "example": 0.9 }
+        }
+      },
+      "JobResponse": {
+        "type": "object",
+        "properties": {
+          "id":           { "type": "string", "format": "uuid" },
+          "company_name": { "type": "string", "example": "Google" },
+          "position":     { "type": "string", "example": "Backend Engineer" },
+          "created_at":   { "type": "string", "format": "date-time" },
+          "description":  { "$ref": "#/components/schemas/JobDescriptionResponse" },
+          "keywords": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/JobKeywordResponse" }
+          }
+        }
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "page":        { "type": "integer", "example": 1 },
+          "limit":       { "type": "integer", "example": 10 },
+          "total_items": { "type": "integer", "example": 50 },
+          "total_pages": { "type": "integer", "example": 5 }
+        }
+      }
+    }
+  }
+}

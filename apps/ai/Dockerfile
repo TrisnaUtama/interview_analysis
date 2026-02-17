@@ -1,26 +1,18 @@
-FROM python:3.12-slim AS builder
+FROM mcr.microsoft.com/playwright/python:v1.42.0-jammy
 
 WORKDIR /app
 
 RUN pip install --no-cache-dir uv
 
-COPY . .
+COPY pyproject.toml uv.lock* ./
 
 RUN uv venv .venv && \
-    uv pip install --no-cache -e .
+    uv pip install --no-cache .
 
-FROM python:3.12-slim AS runner
-
-WORKDIR /app
-
-COPY --from=builder /app/.venv /app/.venv
+COPY . .
 
 ENV PATH="/app/.venv/bin:$PATH"
 ENV VIRTUAL_ENV="/app/.venv"
-
-RUN playwright install chromium --with-deps
-
-COPY . .
 
 EXPOSE 22001
 
