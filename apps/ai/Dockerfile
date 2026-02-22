@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright/python:v1.42.0-jammy
+FROM mcr.microsoft.com/playwright/python:v1.58.0-jammy
 
 WORKDIR /app
 
@@ -19,7 +19,7 @@ RUN uv venv .venv
 ENV PATH="/app/.venv/bin:$PATH"
 ENV VIRTUAL_ENV="/app/.venv"
 
-RUN uv pip install --no-cache .
+RUN uv sync --no-cache
 
 COPY . .
 
