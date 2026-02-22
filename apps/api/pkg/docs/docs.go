@@ -15,7 +15,7 @@ type Server struct {
 }
 
 func getServers() []Server {
-	if env := os.Getenv("APP_ENV"); env == "staging" || env == "production" {
+	if env := os.Getenv("APP_ENV"); env == "development" || env == "production" {
 		return []Server{
 			{URL: "https://stg-interview.trisnautama.site", Description: "Staging"},
 		}
