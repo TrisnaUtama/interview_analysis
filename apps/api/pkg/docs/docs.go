@@ -1,6 +1,7 @@
 package docs
 
 import (
+	"ai-interview-api/internal/configs"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -14,18 +15,18 @@ type Server struct {
 	Description string `json:"description"`
 }
 
-func getServers() []Server {
-	if env := os.Getenv("APP_ENV"); env == "development" || env == "production" {
+func getServers(cfg *configs.Setting) []Server {
+	if cfg.App.Env == "staging" || cfg.App.Env == "production" {
 		return []Server{
-			{URL: "https://stg-interview.trisnautama.site", Description: "Staging"},
+			{URL: cfg.App.Url, Description: "Staging"},
 		}
 	}
 	return []Server{
-		{URL: "http://localhost:21001", Description: "Local development"},
+		{URL: fmt.Sprintf("http://localhost:%d", cfg.App.Port), Description: "Local development"},
 	}
 }
 
-func MergeSpecs(baseFile, modulesDir string) ([]byte, error) {
+func MergeSpecs(cfg *configs.Setting, baseFile, modulesDir string) ([]byte, error) {
 	baseData, err := os.ReadFile(baseFile)
 	if err != nil {
 		return nil, fmt.Errorf("read base file error: %w", err)
@@ -36,7 +37,7 @@ func MergeSpecs(baseFile, modulesDir string) ([]byte, error) {
 		return nil, err
 	}
 
-	base["servers"] = getServers()
+	base["servers"] = getServers(cfg)
 
 	if base["paths"] == nil {
 		base["paths"] = make(map[string]any)
