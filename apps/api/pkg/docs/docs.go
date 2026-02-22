@@ -16,7 +16,7 @@ type Server struct {
 }
 
 func getServers(cfg *configs.Setting) []Server {
-	if cfg.App.Env == "staging" || cfg.App.Env == "production" {
+	if cfg.App.Env == "development" || cfg.App.Env == "production" {
 		return []Server{
 			{URL: cfg.App.Url, Description: "Staging"},
 		}
