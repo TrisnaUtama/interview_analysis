@@ -20,4 +20,8 @@ func Init(r chi.Router, db *pgxpool.Pool, cfg *configs.Setting) {
 		r.Get("/{id}", handler.GetOneJob)
 		r.Delete("/{id}", handler.DeleteJob)
 	})
+	r.Route("/internal/jobs", func(r chi.Router) {
+		r.Use(middlewares.InternalOnly(cfg.AI.ApiKey))
+		r.Patch("/{id}/analysis", handler.InternalAnalysisCallback)
+	})
 }

@@ -4,9 +4,13 @@ import (
 	"ai-interview-api/internal/configs"
 	"ai-interview-api/pkg/logger"
 	"ai-interview-api/pkg/response"
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
@@ -17,6 +21,7 @@ type Service interface {
 	GetOneJob(ctx context.Context, id string) (*JobResponse, error)
 	GetJobs(ctx context.Context, page, limit int) ([]*JobResponse, *response.PaginationMeta, error)
 	DeleteJob(ctx context.Context, id string) error
+	HandleAnalysisCallback(ctx context.Context, req AnalysisCallbackRequest) error
 }
 
 type service struct {
@@ -47,6 +52,23 @@ func (s *service) InsertJob(ctx context.Context, req CreateJobRequest, createdBy
 		logger.Error("failed to insert job description", zap.Error(err))
 		return nil, err
 	}
+
+	go func() {
+		payload := aiProcessPayload{
+			JobDescriptionID: jd.ID,
+			JobID:            job.ID,
+			SourceType:       req.SourceType,
+			SourceURL:        req.SourceURL,
+			RawText:          req.RawText,
+		}
+		if err := s.triggerAIAnalysis(payload); err != nil {
+			logger.Error("failed to trigger AI analysis",
+				zap.Error(err),
+				zap.String("job_id", job.ID),
+				zap.String("job_description_id", jd.ID),
+			)
+		}
+	}()
 
 	return &JobResponse{
 		ID:          job.ID,
@@ -113,5 +135,74 @@ func (s *service) DeleteJob(ctx context.Context, id string) error {
 		logger.Error("failed to delete job", zap.Error(err))
 		return err
 	}
+	return nil
+}
+
+func (s *service) HandleAnalysisCallback(ctx context.Context, req AnalysisCallbackRequest) error {
+	if req.Status == "failed" {
+		if err := s.repo.UpsertJobDescriptionAnalysis(ctx, req.JobDescriptionID, "", "", "failed"); err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return pgx.ErrNoRows
+			}
+			logger.Error("failed to update analysis status to failed", zap.Error(err))
+			return err
+		}
+		return nil
+	}
+
+	if err := s.repo.UpsertJobDescriptionAnalysis(ctx, req.JobDescriptionID, req.RawText, req.ParsedText, "completed"); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return pgx.ErrNoRows
+		}
+		logger.Error("failed to upsert job description analysis", zap.Error(err))
+		return err
+	}
+
+	jobID, err := s.repo.GetJobIDByDescriptionID(ctx, req.JobDescriptionID)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return pgx.ErrNoRows
+		}
+		logger.Error("failed to get job_id from description_id", zap.Error(err))
+		return err
+	}
+
+	if err := s.repo.UpsertJobKeywords(ctx, jobID, req.Keywords); err != nil {
+		logger.Error("failed to upsert job keywords", zap.Error(err))
+		return err
+	}
+
+	return nil
+}
+
+func (s *service) triggerAIAnalysis(payload aiProcessPayload) error {
+	body, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("marshal payload: %w", err)
+	}
+
+	req, err := http.NewRequest(
+		http.MethodPost,
+		s.cfg.AI.AiUrl+"jobs/process",
+		bytes.NewReader(body),
+	)
+	if err != nil {
+		return fmt.Errorf("create request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-Internal-Secret", s.cfg.AI.ApiKey)
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("call AI service: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusAccepted {
+		return fmt.Errorf("AI service returned status %d", resp.StatusCode)
+	}
+
 	return nil
 }

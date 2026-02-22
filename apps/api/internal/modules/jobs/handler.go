@@ -119,3 +119,32 @@ func (h *Handler) DeleteJob(w http.ResponseWriter, r *http.Request) {
 
 	response.Success(w, r, http.StatusOK, "jobs.deleted", nil)
 }
+
+// PATCH /internal/jobs/{id}/analysis
+func (h *Handler) InternalAnalysisCallback(w http.ResponseWriter, r *http.Request) {
+	jobDescriptionID := chi.URLParam(r, "id")
+	if jobDescriptionID == "" {
+		response.Error(w, r, http.StatusBadRequest, "error.invalid_request")
+		return
+	}
+
+	var req AnalysisCallbackRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		response.Error(w, r, http.StatusBadRequest, "error.invalid_request")
+		return
+	}
+
+	req.JobDescriptionID = jobDescriptionID
+
+	if err := h.service.HandleAnalysisCallback(r.Context(), req); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			response.Error(w, r, http.StatusNotFound, "error.not_found")
+			return
+		}
+		logger.Error("analysis callback failed", zap.Error(err))
+		response.Error(w, r, http.StatusInternalServerError, "error.internal")
+		return
+	}
+
+	response.Success(w, r, http.StatusOK, "jobs.analysis_updated", nil)
+}
