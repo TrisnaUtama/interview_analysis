@@ -48,10 +48,12 @@ services:
       context: ../apps/ai
       dockerfile: Dockerfile
     command: /app/.venv/bin/celery -A app.core.celery worker -c 4 -l info
-    volumes:
-      - ./:/app
     env_file:
       - ../.env.dev
+    networks:
+      - ai_interview_network
+    depends_on:
+      - api
 
 networks:
   ai_interview_network:
