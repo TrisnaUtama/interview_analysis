@@ -6,14 +6,7 @@
     "description": "API documentation for AI Interview platform"
   },
   "servers": [
-    {
-      "url": "http://localhost:21001",
-      "description": "Local development"
-    },
-    {
-      "url": "https://stg-interview.trisnautama.site",
-      "description": "Staging"
-    }
+
   ],
   "components": {
     "securitySchemes": {
