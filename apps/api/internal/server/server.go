@@ -47,7 +47,7 @@ func (s *Server) setupMiddleware() {
 }
 
 func (s *Server) setupRoutes(db *database.PostgresDB) {
-	spec, err := docs.MergeSpecs("pkg/docs/base.json", "pkg/docs/modules")
+	spec, err := docs.MergeSpecs(s.cfg, "pkg/docs/base.json", "pkg/docs/modules")
 	if err != nil {
 		logger.Fatal("failed to merge openapi specs", zap.Error(err))
 	}
