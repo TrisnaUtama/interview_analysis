@@ -9,6 +9,22 @@ import (
 
 type OpenAPI map[string]any
 
+type Server struct {
+	URL         string `json:"url"`
+	Description string `json:"description"`
+}
+
+func getServers() []Server {
+	if env := os.Getenv("APP_ENV"); env == "staging" || env == "production" {
+		return []Server{
+			{URL: "https://stg-interview.trisnautama.site", Description: "Staging"},
+		}
+	}
+	return []Server{
+		{URL: "http://localhost:21001", Description: "Local development"},
+	}
+}
+
 func MergeSpecs(baseFile, modulesDir string) ([]byte, error) {
 	baseData, err := os.ReadFile(baseFile)
 	if err != nil {
@@ -19,6 +35,8 @@ func MergeSpecs(baseFile, modulesDir string) ([]byte, error) {
 	if err := json.Unmarshal(baseData, &base); err != nil {
 		return nil, err
 	}
+
+	base["servers"] = getServers()
 
 	if base["paths"] == nil {
 		base["paths"] = make(map[string]any)
