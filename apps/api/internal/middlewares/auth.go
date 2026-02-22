@@ -1,4 +1,3 @@
-// middlewares/jwt.go
 package middlewares
 
 import (
@@ -12,6 +11,7 @@ import (
 type contextKey string
 
 const UserIDKey contextKey = "UserId"
+const ClaimsKey contextKey = "Claims"
 
 func JWTAuth(cfg *configs.Setting) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
@@ -29,6 +29,7 @@ func JWTAuth(cfg *configs.Setting) func(http.Handler) http.Handler {
 			}
 
 			ctx := context.WithValue(r.Context(), UserIDKey, claims.UserID)
+			ctx = context.WithValue(ctx, ClaimsKey, claims)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}

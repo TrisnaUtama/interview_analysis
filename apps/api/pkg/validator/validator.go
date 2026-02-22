@@ -26,6 +26,10 @@ func Validate(s any) map[string]string {
 			errors[field] = fmt.Sprintf("%s must be at least %s characters", field, e.Param())
 		case "max":
 			errors[field] = fmt.Sprintf("%s must be at most %s characters", field, e.Param())
+		case "oneof":
+			errors[field] = fmt.Sprintf("%s must be one of: %s", field, e.Param())
+		case "omitempty":
+			errors[field] = fmt.Sprintf("%s is invalid", field)
 		default:
 			errors[field] = fmt.Sprintf("%s is invalid", field)
 		}
