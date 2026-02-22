@@ -43,10 +43,9 @@ services:
       - api
   
   celery:
-    context: ../apps/ai
     container_name: ai_interview_ai_celery_dev
     build:
-      context: .
+      context: ../apps/ai
       dockerfile: Dockerfile
     command: uv run celery -A app.core.celery worker -c 4 -l info
     volumes:
