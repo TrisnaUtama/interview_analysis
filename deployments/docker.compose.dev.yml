@@ -47,7 +47,7 @@ services:
     build:
       context: ../apps/ai
       dockerfile: Dockerfile
-    command: uv run celery -A app.core.celery worker -c 4 -l info
+    command: /app/.venv/bin/celery -A app.core.celery worker -c 4 -l info
     volumes:
       - ./:/app
     env_file:
