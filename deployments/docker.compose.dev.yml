@@ -41,6 +41,17 @@ services:
       - ai_interview_network
     depends_on:
       - api
+  
+  celery:
+    container_name: ai_interview_ai_celery_dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uv run celery -A app.core.celery worker -c 4 -l info
+    volumes:
+      - ./:/app
+    env_file:
+      - .env.dev
 
 networks:
   ai_interview_network:

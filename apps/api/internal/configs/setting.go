@@ -30,6 +30,10 @@ type Setting struct {
 		ClientSecret string
 		RedirectUrl  string
 	}
+	AI struct {
+		AiUrl string
+		ApiKey string
+	}
 }
 
 func NewSetting() (*Setting, error) {
@@ -67,5 +71,7 @@ func NewSetting() (*Setting, error) {
 	s.OAUTH.ClientSecret = os.Getenv("CLIENT_SECRET")
 	s.OAUTH.RedirectUrl = os.Getenv("GOOGLE_REDIRECT_URI")
 
+	s.AI.AiUrl = os.Getenv("AI_BASE_URL")
+	s.AI.ApiKey=os.Getenv("AI_API_KEY")
 	return s, nil
 }
