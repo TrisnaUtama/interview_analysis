@@ -10,6 +10,7 @@ import (
 	"ai-interview-api/internal/server"
 	"ai-interview-api/pkg/i18n"
 	"ai-interview-api/pkg/logger"
+	"ai-interview-api/pkg/minio"
 
 	"go.uber.org/zap"
 )
@@ -18,6 +19,17 @@ func main() {
 	cfg, err := configs.NewSetting()
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
+	}
+
+	minioClient, err := minio.NewMinioClient(
+		cfg.MINIO.Endpoint,
+		cfg.MINIO.AccessKey,
+		cfg.MINIO.SecretKey,
+		cfg.MINIO.BucketInterview,
+		cfg.MINIO.SSL,
+	)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	logger.Init(cfg.App.Env)
@@ -33,7 +45,7 @@ func main() {
 	}
 	defer db.Close()
 
-	srv := server.New(cfg, db)
+	srv := server.New(cfg, db, minioClient)
 
 	serverAddr := fmt.Sprintf(":%d", cfg.App.Port)
 	log.Printf("Server is running on http://localhost%s", serverAddr)

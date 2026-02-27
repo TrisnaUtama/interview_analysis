@@ -2,13 +2,12 @@ package entities
 
 import "time"
 
-type JobDescriptions struct {
+type Resumes struct {
 	ID             string
-	JobID          string
-	SourceType     JobSourceType
-	SourceURL      *string
-	RawText        *string
-	ParsedText     *string
+	UserId         string
+	FileUrl        string
+	RawText        string
+	ParsedText     string
 	AnalysisStatus JobAnalysisStatus
 	CreatedAt      time.Time
 	UpdatedAt      time.Time

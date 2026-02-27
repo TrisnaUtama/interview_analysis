@@ -47,7 +47,7 @@ func toUserResponse(u *entities.Users) UserResponse {
 		Email:     u.Email,
 		Name:      name,
 		AvatarURL: avatarURL,
-		Role:      u.Role,
+		Role:      string(u.Role),
 		CreatedAt: u.CreatedAt,
 	}
 }
