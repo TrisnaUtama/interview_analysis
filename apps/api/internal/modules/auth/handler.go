@@ -78,7 +78,7 @@ func (h *Handler) GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		MaxAge:   7 * 24 * 60 * 60,
 	})
 
-	http.Redirect(w, r, h.service.GetFrontendURL()+"/dashboard", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, h.service.GetFrontendURL()+"/auth/callback", http.StatusTemporaryRedirect)
 }
 
 // POST /api/v1/auth/refresh
