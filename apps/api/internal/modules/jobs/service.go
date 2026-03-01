@@ -77,10 +77,10 @@ func (s *service) InsertJob(ctx context.Context, req CreateJobRequest, createdBy
 		CreatedAt:   job.CreatedAt,
 		Description: &JobDescriptionResponse{
 			ID:             jd.ID,
-			SourceType:     jd.SourceType,
+			SourceType:     string(jd.SourceType),
 			SourceURL:      jd.SourceURL,
 			RawText:        jd.RawText,
-			AnalysisStatus: jd.AnalysisStatus,
+			AnalysisStatus: string(jd.AnalysisStatus),
 		},
 		Keywords: []JobKeywordResponse{},
 	}, nil

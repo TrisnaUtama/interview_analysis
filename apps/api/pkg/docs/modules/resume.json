@@ -1,0 +1,306 @@
+{
+  "paths": {
+    "/api/v1/resumes": {
+      "post": {
+        "tags": ["Resumes"],
+        "summary": "Upload Resume",
+        "description": "Upload CV/Resume file (PDF, DOC, DOCX). File will be processed in background — OCR, text extraction, and AI analysis. Status can be tracked via GET /resumes/{id}.",
+        "security": [{ "CookieAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "CV/Resume file. Allowed formats: PDF, DOC, DOCX. Max size: 10MB."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Resume accepted and being processed in background",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Response" },
+                    {
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/ResumeResponse" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request — file too large, missing, or wrong format",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Resumes"],
+        "summary": "Get My Resumes",
+        "description": "Get paginated list of resumes belonging to the authenticated user.",
+        "security": [{ "CookieAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of resumes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Response" },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "items": {
+                              "type": "array",
+                              "items": { "$ref": "#/components/schemas/ResumeResponse" }
+                            },
+                            "meta": { "$ref": "#/components/schemas/PaginationMeta" }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resumes/{id}": {
+      "get": {
+        "tags": ["Resumes"],
+        "summary": "Get Resume by ID",
+        "security": [{ "CookieAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resume detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Response" },
+                    {
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/ResumeResponse" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "404": {
+            "description": "Resume not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Resumes"],
+        "summary": "Delete Resume",
+        "security": [{ "CookieAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resume deleted",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "404": {
+            "description": "Resume not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/internal/resumes/{id}/callback": {
+      "post": {
+        "tags": ["Internal"],
+        "summary": "Resume Analysis Callback",
+        "description": "Called by AI service after resume processing is complete. Requires X-Internal-Secret header.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "security": [{ "InternalSecret": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CallbackResumeRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Callback processed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized — invalid internal secret",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResumeResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "example": "550e8400-e29b-41d4-a716-446655440000" },
+          "user_id": { "type": "string", "format": "uuid" },
+          "file_url": { "type": "string", "nullable": true, "description": "Path file di MinIO, null jika masih processing" },
+          "raw_text": { "type": "string", "nullable": true, "description": "Raw text hasil OCR, null jika masih processing" },
+          "parsed_data": { "type": "object", "nullable": true, "description": "Structured data hasil AI analysis, null jika masih processing" },
+          "analysis_status": {
+            "type": "string",
+            "enum": ["pending", "scraping", "analyzing", "completed", "failed"],
+            "example": "pending"
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "deleted_at": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      },
+      "CallbackResumeRequest": {
+        "type": "object",
+        "properties": {
+          "raw_text": { "type": "string", "nullable": true },
+          "parsed_data": { "type": "object", "nullable": true },
+          "status": { "type": "string", "enum": ["failed"], "nullable": true },
+          "error": { "type": "string", "nullable": true }
+        }
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer", "example": 1 },
+          "limit": { "type": "integer", "example": 10 },
+          "total_items": { "type": "integer", "example": 25 },
+          "total_pages": { "type": "integer", "example": 3 }
+        }
+      }
+    },
+    "securitySchemes": {
+      "InternalSecret": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Internal-Secret",
+        "description": "Internal secret key for service-to-service communication"
+      }
+    }
+  }
+}

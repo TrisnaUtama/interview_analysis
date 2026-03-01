@@ -34,11 +34,19 @@ type Setting struct {
 		AiUrl string
 		ApiKey string
 	}
+	MINIO struct {
+		Endpoint string
+		AccessKey string
+		SecretKey string
+		SSL bool
+		BucketInterview string
+	}
 }
 
 func NewSetting() (*Setting, error) {
 	s := &Setting{}
 
+	// app
 	s.App.Env = os.Getenv("ENV")
 	s.App.Url = os.Getenv("BASE_URL")
 	s.App.Key = os.Getenv("APP_KEY")
@@ -50,6 +58,7 @@ func NewSetting() (*Setting, error) {
 	}
 	s.App.Port = port
 
+	// db
 	s.Database.Host = os.Getenv("DB_HOST")
 	s.Database.Name = os.Getenv("DB_NAME")
 	s.Database.User = os.Getenv("DB_USER")
@@ -67,11 +76,19 @@ func NewSetting() (*Setting, error) {
 		s.Database.Host, s.Database.User, s.Database.Password, s.Database.Name, s.Database.Port,
 	)
 
+	// oauth
 	s.OAUTH.ClientId = os.Getenv("CLIENT_ID")
 	s.OAUTH.ClientSecret = os.Getenv("CLIENT_SECRET")
 	s.OAUTH.RedirectUrl = os.Getenv("GOOGLE_REDIRECT_URI")
 
+	// ai
 	s.AI.AiUrl = os.Getenv("AI_BASE_URL")
 	s.AI.ApiKey=os.Getenv("AI_API_KEY")
+
+	// minio 
+	s.MINIO.Endpoint = os.Getenv("MINIO_ENDPOINT")
+	s.MINIO.AccessKey = os.Getenv("MINIO_ACCESS_KEY")
+	s.MINIO.SecretKey = os.Getenv("MINIO_SECRET_KEY")
+	s.MINIO.BucketInterview = os.Getenv("MINIO_BUCKET_INTERVIEW")
 	return s, nil
 }

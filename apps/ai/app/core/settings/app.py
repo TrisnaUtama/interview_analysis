@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class AppSettings(BaseSettings):
     APP_NAME: str = "INTERVIEW APP"
+    APP_KEY: str = ""
     VERSION: str = "0.0.1"
     DOCS_URL: str | None = None
     REDOCS_URL: str | None = None

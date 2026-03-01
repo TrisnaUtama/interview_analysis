@@ -8,8 +8,10 @@ import (
 	"ai-interview-api/internal/configs"
 	postgres "ai-interview-api/internal/database"
 	"ai-interview-api/internal/server"
+	httpclient "ai-interview-api/pkg/http"
 	"ai-interview-api/pkg/i18n"
 	"ai-interview-api/pkg/logger"
+	"ai-interview-api/pkg/minio"
 
 	"go.uber.org/zap"
 )
@@ -19,6 +21,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
+
+	minioClient, err := minio.NewMinioClient(
+		cfg.MINIO.Endpoint,
+		cfg.MINIO.AccessKey,
+		cfg.MINIO.SecretKey,
+		cfg.MINIO.BucketInterview,
+		cfg.MINIO.SSL,
+	)
+	if err != nil {
+		log.Fatalf("Failed to connect to MinIO: %v", err)
+	}
+
+	aiClient := httpclient.NewAIClient(cfg.AI.AiUrl, cfg.AI.ApiKey)
 
 	logger.Init(cfg.App.Env)
 	defer logger.Log.Sync()
@@ -33,15 +48,14 @@ func main() {
 	}
 	defer db.Close()
 
-	srv := server.New(cfg, db)
+	srv := server.New(cfg, db, minioClient, aiClient)
 
 	serverAddr := fmt.Sprintf(":%d", cfg.App.Port)
 	log.Printf("Server is running on http://localhost%s", serverAddr)
 	log.Printf("Docs available on http://localhost%s/docs", serverAddr)
 	log.Printf("Environment: %s", cfg.App.Env)
 
-	err = http.ListenAndServe(serverAddr, srv.Handler())
-	if err != nil {
+	if err = http.ListenAndServe(serverAddr, srv.Handler()); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }

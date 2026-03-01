@@ -7,10 +7,10 @@ type Users struct {
 	Email        string
 	Name         *string
 	AvatarURL    *string
-	Provider     string
+	Provider     AuthProvider
 	ProviderID   string
 	PasswordHash *string
-	Role         string
+	Role         UserRole
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	DeletedAt    *time.Time

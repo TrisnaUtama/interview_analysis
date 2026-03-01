@@ -110,7 +110,7 @@ func (s *service) HandleGoogleCallback(ctx context.Context, code string) (*entit
 	accessToken, err := jwt.GenerateAccessToken(
 		user.ID,
 		user.Email,
-		user.Role,
+		string(user.Role),
 		s.cfg.App.Key,
 	)
 	if err != nil {

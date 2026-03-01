@@ -13,5 +13,6 @@ class AISettings(BaseSettings):
     LITELLM_API_KEY: str = ""
     ELEVENLABS_API_KEY: str = ""
     ELEVENLABS_DEFAULT_VOICE_ID: str = ""
+    MISTRAL_API_KEY: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

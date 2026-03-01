@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from scalar_fastapi import get_scalar_api_reference
 
 from app.core.settings.index import settings
-from app.routes import job_analysis
+from app.routes import job_analysis, resume_analysis
 
 
 app = FastAPI(
@@ -29,6 +29,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(resume_analysis.router, prefix="/ai/v1")
 app.include_router(job_analysis.router, prefix="/ai/v1")
 
 
