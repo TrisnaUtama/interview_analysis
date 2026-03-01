@@ -83,7 +83,7 @@ async def _send_callback(payload: AnalysisCallbackPayload) -> None:
             json=payload.model_dump(),
             headers={
                 "Content-Type": "application/json",
-                "X-Internal-Secret": settings.app.MAIN_API_KEY,
+                "X-Internal-Secret": settings.app.AI_APP_KEY,
             },
             timeout=15.0,
         )
