@@ -17,7 +17,7 @@ def analyze_resume(
     payload: AnalyzeResumeRequest,
     x_internal_secret: str = Header(default=None),
 ):
-    if x_internal_secret != settings.app.APP_KEY:
+    if x_internal_secret != settings.app.AI_APP_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid internal secret"
         )
