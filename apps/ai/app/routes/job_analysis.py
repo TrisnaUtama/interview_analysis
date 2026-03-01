@@ -12,7 +12,7 @@ router = APIRouter(prefix="/jobs", tags=["Jobs"])
 
 def verify_internal_secret(request: Request) -> None:
     secret = request.headers.get("X-Internal-Secret", "")
-    if not secret or secret != settings.app.MAIN_API_KEY:
+    if not secret or secret != settings.app.AI_APP_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )

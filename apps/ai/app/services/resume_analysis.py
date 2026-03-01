@@ -43,7 +43,7 @@ class ResumeAnalyzerService:
         logger.info(f"Analysis started | input_chars={len(raw_text)}")
 
         response = await self.client.beta.chat.completions.parse(
-            model="openrouter/openai/gpt-4o-mini",
+            model="openrouter/meta-llama/llama-3.1-8b-instruct",
             messages=[
                 {"role": "system", "content": RESUME_ANALYSIS_SYSTEM_PROMPT},
                 {
