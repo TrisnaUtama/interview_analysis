@@ -33,7 +33,6 @@ func NewMinioClient(endpoint, accessKey, secretKey, bucketInterview string, ssl 
 }
 
 type UploadResult struct {
-	URL      string
 	Filename string
 	Size     int64
 }
@@ -48,9 +47,7 @@ func (m *MinioClient) UploadResume(ctx context.Context, file multipart.File, hea
 		return nil, fmt.Errorf("failed to upload resume: %w", err)
 	}
 
-	url := fmt.Sprintf("%s/%s/%s", m.client.EndpointURL(), m.bucketInterview, filename)
 	return &UploadResult{
-		URL:      url,
 		Filename: filename,
 		Size:     info.Size,
 	}, nil
@@ -66,9 +63,7 @@ func (m *MinioClient) UploadAudio(ctx context.Context, file multipart.File, head
 		return nil, fmt.Errorf("failed to upload audio: %w", err)
 	}
 
-	url := fmt.Sprintf("%s/%s/%s", m.client.EndpointURL(), m.bucketInterview, filename)
 	return &UploadResult{
-		URL:      url,
 		Filename: filename,
 		Size:     info.Size,
 	}, nil

@@ -8,7 +8,9 @@ import (
 	"ai-interview-api/internal/database"
 	"ai-interview-api/internal/modules/auth"
 	"ai-interview-api/internal/modules/jobs"
+	"ai-interview-api/internal/modules/resumes"
 	"ai-interview-api/pkg/docs"
+	httpclient "ai-interview-api/pkg/http"
 	"ai-interview-api/pkg/logger"
 	"ai-interview-api/pkg/minio"
 
@@ -22,13 +24,15 @@ type Server struct {
 	router      *chi.Mux
 	cfg         *configs.Setting
 	minioClient *minio.MinioClient
+	aiClient    *httpclient.AIClient
 }
 
-func New(cfg *configs.Setting, db *database.PostgresDB, minioClient *minio.MinioClient) *Server {
+func New(cfg *configs.Setting, db *database.PostgresDB, minioClient *minio.MinioClient, aiClient *httpclient.AIClient) *Server {
 	s := &Server{
 		router:      chi.NewRouter(),
 		cfg:         cfg,
 		minioClient: minioClient,
+		aiClient: aiClient,
 	}
 	s.setupMiddleware()
 	s.setupRoutes(db)
@@ -95,6 +99,7 @@ func (s *Server) setupRoutes(db *database.PostgresDB) {
 	s.router.Route("/api/v1", func(r chi.Router) {
 		auth.Init(r, db.GetPool(), s.cfg)
 		jobs.Init(r, db.GetPool(), s.cfg)
+		resumes.Init(r, db.GetPool(), s.cfg, s.minioClient, s.aiClient)
 	})
 }
 
