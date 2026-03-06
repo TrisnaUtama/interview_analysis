@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -25,20 +26,23 @@ type Setting struct {
 		Schema   string
 		ConnStr  string
 	}
+	Cors struct {
+		AllowedOrigins []string
+	}
 	OAUTH struct {
 		ClientId     string
 		ClientSecret string
 		RedirectUrl  string
 	}
 	AI struct {
-		AiUrl string
+		AiUrl  string
 		ApiKey string
 	}
 	MINIO struct {
-		Endpoint string
-		AccessKey string
-		SecretKey string
-		SSL bool
+		Endpoint        string
+		AccessKey       string
+		SecretKey       string
+		SSL             bool
 		BucketInterview string
 	}
 }
@@ -51,6 +55,12 @@ func NewSetting() (*Setting, error) {
 	s.App.Url = os.Getenv("BASE_URL")
 	s.App.Key = os.Getenv("APP_KEY")
 	s.App.FrontEndUrl = os.Getenv("FRONT_END_URL")
+
+	cors := os.Getenv("CORS_ALLOWED_ORIGINS")
+
+	if cors != "" {
+		s.Cors.AllowedOrigins = strings.Split(cors, ",")
+	}
 
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
@@ -83,9 +93,9 @@ func NewSetting() (*Setting, error) {
 
 	// ai
 	s.AI.AiUrl = os.Getenv("AI_BASE_URL")
-	s.AI.ApiKey=os.Getenv("AI_API_KEY")
+	s.AI.ApiKey = os.Getenv("AI_API_KEY")
 
-	// minio 
+	// minio
 	s.MINIO.Endpoint = os.Getenv("MINIO_ENDPOINT")
 	s.MINIO.AccessKey = os.Getenv("MINIO_ACCESS_KEY")
 	s.MINIO.SecretKey = os.Getenv("MINIO_SECRET_KEY")

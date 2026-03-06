@@ -32,7 +32,7 @@ func New(cfg *configs.Setting, db *database.PostgresDB, minioClient *minio.Minio
 		router:      chi.NewRouter(),
 		cfg:         cfg,
 		minioClient: minioClient,
-		aiClient: aiClient,
+		aiClient:    aiClient,
 	}
 	s.setupMiddleware()
 	s.setupRoutes(db)
@@ -45,7 +45,7 @@ func (s *Server) setupMiddleware() {
 	s.router.Use(middleware.Logger)
 	s.router.Use(middleware.Recoverer)
 	s.router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"https://*.trisnautama.com", "http://localhost:*"},
+		AllowedOrigins:   s.cfg.Cors.AllowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
 		AllowCredentials: true,
