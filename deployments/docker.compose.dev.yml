@@ -1,4 +1,4 @@
-name: ai-interview-dev
+ame: ai-interview-dev
 
 services:
   api:
@@ -8,7 +8,7 @@ services:
     container_name: ai_interview_api_dev
     restart: unless-stopped
     ports:
-      - "127.0.0.1:21001:21001"    
+      - "127.0.0.1:21001:21001"
     env_file:
       - ../.env.dev
     networks:
@@ -36,14 +36,14 @@ services:
     container_name: ai_interview_ai_dev
     restart: unless-stopped
     ports:
-      - "127.0.0.1:22001:22001"     
+      - "127.0.0.1:22001:22001"
     env_file:
       - ../.env.dev
     networks:
       - ai_interview_network
     depends_on:
       - api
-  
+
   celery:
     container_name: ai_interview_ai_celery_dev
     build:
