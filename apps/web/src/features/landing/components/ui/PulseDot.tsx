@@ -4,11 +4,11 @@ export function PulseDot() {
   return (
     <span className="relative flex size-2">
       <motion.span
-        className="absolute inline-flex size-full rounded-full bg-brand opacity-75"
-        animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+        className="absolute inset-0 rounded-full bg-brand"
+        animate={{ scale: [1, 2], opacity: [0.6, 0] }}
+        transition={{ duration: 1.6, repeat: Infinity }}
       />
-      <span className="relative inline-flex size-2 rounded-full bg-brand" />
+      <span className="relative size-2 rounded-full bg-brand shadow-[0_0_12px_rgba(249,115,22,0.8)]" />
     </span>
   );
 }

@@ -6,213 +6,204 @@ import {
   Mic,
   BarChart3,
   Plus,
-  ArrowRight,
+  ArrowUpRight,
   Clock,
-  TrendingUp,
-  CheckCircle,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 
+/* ───────── BRAND COLORS ───────── */
+const ACCENT = "#FB923C"; // orange (landing page accent feel)
+
+/* ───────── DATA ───────── */
 const STATS = [
-  {
-    label: "Resumes",
-    value: "0",
-    icon: FileText,
-    color: "text-blue-400",
-    bg: "bg-blue-400/10",
-    border: "border-blue-400/20",
-  },
-  {
-    label: "Jobs",
-    value: "0",
-    icon: Briefcase,
-    color: "text-violet-400",
-    bg: "bg-violet-400/10",
-    border: "border-violet-400/20",
-  },
-  {
-    label: "Sessions",
-    value: "0",
-    icon: Mic,
-    color: "text-brand",
-    bg: "bg-brand/10",
-    border: "border-brand/20",
-  },
-  {
-    label: "Avg. Score",
-    value: "—",
-    icon: TrendingUp,
-    color: "text-emerald-400",
-    bg: "bg-emerald-400/10",
-    border: "border-emerald-400/20",
-  },
+  { label: "Resumes", value: "0", icon: FileText },
+  { label: "Jobs", value: "0", icon: Briefcase },
+  { label: "Sessions", value: "0", icon: Mic },
+  { label: "Score", value: "—", icon: BarChart3 },
 ];
 
-const QUICK_ACTIONS = [
+const ACTIONS = [
   {
     label: "Upload Resume",
-    desc: "Add your CV for AI analysis",
+    desc: "Analyze your CV instantly",
     icon: FileText,
     path: "/dashboard/resumes",
-    color: "text-blue-400",
-    bg: "bg-blue-400/10",
-    border: "border-blue-400/20",
   },
   {
-    label: "Add a Job",
-    desc: "Paste URL or enter description",
+    label: "Add Job",
+    desc: "Track target role",
     icon: Briefcase,
     path: "/dashboard/jobs",
-    color: "text-violet-400",
-    bg: "bg-violet-400/10",
-    border: "border-violet-400/20",
   },
   {
     label: "Start Interview",
-    desc: "Begin your AI practice session",
+    desc: "AI mock interview session",
     icon: Mic,
     path: "/dashboard/session/new",
-    color: "text-brand",
-    bg: "bg-brand/10",
-    border: "border-brand/20",
-    highlight: true,
+    primary: true,
   },
   {
     label: "View Results",
-    desc: "Review your past sessions",
+    desc: "Check performance",
     icon: BarChart3,
     path: "/dashboard/results",
-    color: "text-emerald-400",
-    bg: "bg-emerald-400/10",
-    border: "border-emerald-400/20",
   },
 ];
 
+/* ───────── ANIMATION ───────── */
 function FadeUp({
   children,
   delay = 0,
-  className = "",
 }: {
   children: React.ReactNode;
   delay?: number;
-  className?: string;
 }) {
   return (
     <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      transition={{ duration: 0.45, delay }}
     >
       {children}
     </motion.div>
   );
 }
 
+/* ───────── PAGE ───────── */
 export default function OverviewPage() {
   const { user } = useAuthStore();
-
-  const hour = new Date().getHours();
-  const greeting =
-    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const firstName = user?.name?.split(" ")[0] ?? "there";
 
   return (
-    <div className="max-w-225 mx-auto flex flex-col gap-8">
-      {/* Greeting */}
+    <div className="space-y-10 pb-12 text-slate-200 relative">
+      {/* ───────── BACKGROUND ───────── */}
+      <div className="fixed inset-0 -z-10 bg-[#070A0F]" />
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute top-[-200px] left-1/2 w-[600px] h-[600px] -translate-x-1/2 bg-orange-500/10 blur-[140px] rounded-full" />
+        <div className="absolute bottom-[-200px] right-[-100px] w-[500px] h-[500px] bg-cyan-500/10 blur-[140px] rounded-full" />
+      </div>
+
+      {/* ───────── HERO ───────── */}
       <FadeUp>
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-end justify-between gap-6">
           <div>
-            <p className="text-[13px] text-[#4B5563] mb-1">{greeting}</p>
-            <h2 className="font-display font-extrabold text-white text-[26px] tracking-[-1px]">
-              {user?.name?.split(" ")[0] ?? "there"} 
-            </h2>
-            <p className="text-[14px] text-muted-text mt-1">
-              Ready to practice? Start a new session or review your progress.
+            <p className="text-xs tracking-[0.25em] uppercase text-slate-500">
+              Welcome back
+            </p>
+
+            <h1 className="text-4xl font-semibold text-white mt-2 tracking-tight">
+              {firstName}
+              <span className="text-orange-400">.</span>
+            </h1>
+
+            <p className="text-sm text-slate-400 mt-2">
+              Your interview workspace overview
             </p>
           </div>
+
           <Link to="/dashboard/session/new">
-            <Button className="bg-brand text-canvas hover:bg-[#90CDF4] font-semibold gap-2 shrink-0">
-              <Plus size={15} />
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition hover:scale-[1.02]"
+              style={{
+                backgroundColor: ACCENT,
+                color: "#0B0F14",
+              }}
+            >
+              <Plus size={16} />
               New Session
-            </Button>
+            </button>
           </Link>
         </div>
       </FadeUp>
 
-      {/* Stats */}
+      {/* ───────── STATS ───────── */}
       <FadeUp delay={0.05}>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {STATS.map((stat, i) => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {STATS.map((s, i) => (
             <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 12 }}
+              key={s.label}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 + i * 0.07 }}
+              transition={{ delay: i * 0.05 }}
+              className="
+                rounded-2xl
+                border border-white/10
+                bg-white/[0.03]
+                backdrop-blur-xl
+                p-5
+                hover:border-orange-400/20
+                transition
+              "
             >
-              <Card className="bg-white/3 border-white/6 rounded-xl">
-                <CardContent className="p-4">
-                  <div
-                    className={`inline-flex p-2 rounded-lg ${stat.bg} border ${stat.border} mb-3`}
-                  >
-                    <stat.icon size={14} className={stat.color} />
-                  </div>
-                  <div className="font-display font-extrabold text-white text-[24px] tracking-[-1px] leading-none">
-                    {stat.value}
-                  </div>
-                  <div className="text-[12px] text-[#4B5563] mt-1">
-                    {stat.label}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                  <s.icon size={16} className="text-slate-300" />
+                </div>
+              </div>
+
+              <div className="text-2xl font-semibold text-white">{s.value}</div>
+
+              <div className="text-xs tracking-[0.2em] uppercase text-slate-500 mt-1">
+                {s.label}
+              </div>
             </motion.div>
           ))}
         </div>
       </FadeUp>
 
-      {/* Quick actions */}
-      <FadeUp delay={0.15}>
+      {/* ───────── ACTIONS ───────── */}
+      <FadeUp delay={0.1}>
         <div>
-          <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#374151] mb-3">
-            Quick Actions
+          <p className="text-xs tracking-[0.25em] uppercase text-slate-500 mb-4">
+            Quick actions
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {QUICK_ACTIONS.map((action, i) => (
+
+          <div className="grid sm:grid-cols-2 gap-3">
+            {ACTIONS.map((a, i) => (
               <motion.div
-                key={action.label}
-                initial={{ opacity: 0, y: 12 }}
+                key={a.label}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 + i * 0.07 }}
+                transition={{ delay: 0.1 + i * 0.05 }}
               >
-                <Link to={action.path} className="no-underline block">
-                  <motion.div
-                    className={`flex items-center gap-4 p-4 rounded-xl border transition-colors duration-200 cursor-pointer
+                <Link to={a.path} className="block">
+                  <div
+                    className={`
+                      group flex items-center gap-4 p-4 rounded-2xl border transition
                       ${
-                        action.highlight
-                          ? "bg-brand/[0.07] border-brand/20 hover:bg-brand/12"
-                          : "bg-white/2 border-white/6 hover:bg-white/5 hover:border-white/10"
-                      }`}
-                    whileHover={{ x: 2 }}
-                    transition={{ duration: 0.15 }}
+                        a.primary
+                          ? "bg-white text-black border-white"
+                          : "bg-white/[0.03] text-white border-white/10 hover:border-orange-400/30"
+                      }
+                    `}
                   >
                     <div
-                      className={`p-2.5 rounded-lg ${action.bg} border ${action.border} shrink-0`}
+                      className={`
+                        w-10 h-10 rounded-xl flex items-center justify-center
+                        ${a.primary ? "bg-black/10" : "bg-white/5 border border-white/10"}
+                      `}
                     >
-                      <action.icon size={16} className={action.color} />
+                      <a.icon size={16} />
                     </div>
+
                     <div className="flex-1 min-w-0">
-                      <div
-                        className={`text-[13px] font-semibold ${action.highlight ? "text-brand" : "text-white"}`}
+                      <p className="text-sm font-medium">{a.label}</p>
+                      <p
+                        className={`text-xs mt-0.5 ${
+                          a.primary ? "text-black/60" : "text-slate-500"
+                        }`}
                       >
-                        {action.label}
-                      </div>
-                      <div className="text-[12px] text-[#4B5563] mt-0.5">
-                        {action.desc}
-                      </div>
+                        {a.desc}
+                      </p>
                     </div>
-                    <ArrowRight size={14} className="text-[#374151] shrink-0" />
-                  </motion.div>
+
+                    <ArrowUpRight
+                      size={14}
+                      className={
+                        a.primary ? "text-black/60" : "text-orange-400/70"
+                      }
+                    />
+                  </div>
                 </Link>
               </motion.div>
             ))}
@@ -220,58 +211,80 @@ export default function OverviewPage() {
         </div>
       </FadeUp>
 
-      {/* Recent activity — empty state */}
-      <FadeUp delay={0.25}>
-        <div>
-          <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[#374151] mb-3">
-            Recent Sessions
+      {/* ───────── EMPTY STATE ───────── */}
+      <FadeUp delay={0.15}>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-10 text-center">
+          <div className="w-11 h-11 mx-auto rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <Clock size={18} className="text-slate-400" />
+          </div>
+
+          <h3 className="mt-4 text-sm font-medium text-white">
+            No activity yet
+          </h3>
+
+          <p className="text-sm text-slate-400 mt-1">
+            Start your first interview session to see insights here.
           </p>
-          <Card className="bg-white/2 border-white/6 rounded-xl">
-            <CardContent className="py-14 flex flex-col items-center justify-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/4 border border-white/[0.07] flex items-center justify-center">
-                <Clock size={18} className="text-[#374151]" />
-              </div>
-              <div className="text-center">
-                <p className="text-[13px] text-white font-medium">
-                  No sessions yet
-                </p>
-                <p className="text-[12px] text-[#4B5563] mt-1">
-                  Your interview history will appear here.
-                </p>
-              </div>
-              <Link to="/dashboard/session/new">
-                <Button
-                  size="sm"
-                  className="mt-1 bg-brand/10 border border-brand/20 text-brand hover:bg-brand/20 hover:text-brand text-[12px] font-medium gap-1.5"
-                >
-                  <Plus size={12} />
-                  Start your first session
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+
+          <Link to="/dashboard/session/new">
+            <button
+              className="mt-5 px-4 py-2 rounded-xl text-sm font-medium transition hover:scale-[1.02]"
+              style={{
+                backgroundColor: ACCENT,
+                color: "#0B0F14",
+              }}
+            >
+              Start Session
+            </button>
+          </Link>
         </div>
       </FadeUp>
 
-      {/* Tips */}
-      <FadeUp delay={0.3}>
-        <Card className="bg-brand/4 border-brand/12 rounded-xl">
-          <CardContent className="p-4 flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-brand/10 border border-brand/20 shrink-0 mt-0.5">
-              <CheckCircle size={14} className="text-brand" />
-            </div>
-            <div>
-              <p className="text-[13px] font-semibold text-white mb-0.5">
-                Get the most out of InterviewAI
+      {/* ───────── TIP ───────── */}
+      <FadeUp delay={0.2}>
+        <div className="grid sm:grid-cols-3 gap-4">
+          {[
+            "Upload your CV",
+            "Define target role",
+            "Practice speaking aloud",
+          ].map((t) => (
+            <div
+              key={t}
+              className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-orange-400/20 transition"
+            >
+              <p className="text-sm font-medium text-white">{t}</p>
+              <p className="text-xs text-slate-500 mt-1">
+                Improve interview readiness
               </p>
-              <p className="text-[12px] text-muted-text leading-relaxed">
-                Upload your latest CV, add the job you're targeting, then start
-                a session. The AI will tailor every question to your background
-                and the role.
-              </p>
             </div>
-          </CardContent>
-        </Card>
+          ))}
+        </div>
+      </FadeUp>
+
+      {/* ───────── UPGRADE ───────── */}
+      <FadeUp delay={0.25}>
+        <div className="rounded-2xl border border-white/10 bg-gradient-to-r from-white/[0.04] to-transparent p-6 flex items-center justify-between">
+          <div>
+            <p className="text-white font-medium">
+              Upgrade to Pro <span className="text-orange-400">+</span>
+            </p>
+            <p className="text-slate-400 text-sm mt-1">
+              Unlock deeper AI insights & analytics
+            </p>
+          </div>
+
+          <Link to={"/dashboard/billing" as any}>
+            <button
+              className="px-4 py-2 rounded-xl text-sm font-medium transition hover:scale-[1.02]"
+              style={{
+                backgroundColor: ACCENT,
+                color: "#0B0F14",
+              }}
+            >
+              Upgrade
+            </button>
+          </Link>
+        </div>
       </FadeUp>
     </div>
   );
