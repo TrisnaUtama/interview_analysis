@@ -7,53 +7,66 @@ export default function ForbiddenPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-canvas font-sans flex items-center justify-center relative overflow-hidden">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(99,179,237,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(99,179,237,0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-          maskImage:
-            "radial-gradient(ellipse 60% 60% at 50% 50%, black 30%, transparent 100%)",
-        }}
-      />
+    <div className="min-h-screen bg-[#070A12] flex items-center justify-center relative overflow-hidden text-white">
+      {/* subtle grid + glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_1px_1px,#ffffff_1px,transparent_0)] bg-size-[32px_32px]" />
 
+        <div className="absolute -top-50 left-1/2 w-150 h-150 -translate-x-1/2 bg-orange-500/10 blur-[140px] rounded-full" />
+        <div className="absolute -bottom-50 -right-25 w-125 h-125 bg-purple-500/10 blur-[140px] rounded-full" />
+      </div>
+
+      {/* content */}
       <motion.div
-        className="relative z-10 text-center flex flex-col items-center gap-6"
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        className="relative z-10 text-center flex flex-col items-center gap-6 px-6"
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
       >
-        <div className="flex items-center gap-2 font-display text-[16px] font-extrabold text-white mb-4">
+        {/* brand */}
+        <div className="flex items-center gap-2 text-sm font-semibold text-white/80">
           <PulseDot />
-          InterviewAI
+          Interview<span className="text-orange-400">AI</span>
         </div>
 
-        <div
-          className="font-display font-extrabold text-white/6 leading-none tracking-[-4px] select-none"
-          style={{ fontSize: "clamp(100px, 20vw, 180px)" }}
-        >
-          403
+        {/* big code */}
+        <div className="relative">
+          <div className="text-[120px] sm:text-[160px] font-extrabold tracking-[-6px] text-white/5 select-none leading-none">
+            403
+          </div>
+
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full bg-orange-500/10 blur-2xl" />
+          </div>
         </div>
 
-        <div className="-mt-8">
-          <h1 className="font-display font-extrabold text-white text-[28px] tracking-[-1px] mb-3">
-            Access denied
+        {/* text */}
+        <div className="space-y-2">
+          <h1 className="text-xl sm:text-2xl font-semibold">
+            Access forbidden
           </h1>
-          <p className="text-[14px] text-muted-text max-w-sm">
-            You don't have permission to access this page.
+          <p className="text-sm text-white/40 max-w-sm">
+            You don’t have permission to view this page. If you think this is a
+            mistake, contact your administrator.
           </p>
         </div>
 
-        <Button
-          onClick={() => navigate({ to: "/" })}
-          className="bg-brand text-canvas hover:bg-[#90CDF4] font-semibold mt-2"
-        >
-          Back to Home
-        </Button>
+        {/* actions */}
+        <div className="flex gap-3 mt-2">
+          <Button
+            onClick={() => navigate({ to: "/" })}
+            className="bg-white text-black hover:bg-white/90 font-medium px-5"
+          >
+            Back Home
+          </Button>
+
+          <Button
+            onClick={() => navigate({ to: "/dashboard" })}
+            className="bg-white/5 border border-white/10 text-white hover:bg-white/10"
+          >
+            Dashboard
+          </Button>
+        </div>
       </motion.div>
     </div>
   );
