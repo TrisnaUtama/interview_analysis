@@ -97,7 +97,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {/* Sidebar */}
       <motion.aside
         className={cn(
-          "fixed left-0 top-0 z-50 h-full w-[270px] flex flex-col",
+          "fixed left-0 top-0 z-50 h-full w-67.5 flex flex-col",
           "bg-[#0B0C10] border-r border-white/10",
           "lg:static lg:translate-x-0",
         )}
@@ -106,7 +106,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         transition={{ type: "spring", damping: 30, stiffness: 280 }}
       >
         {/* glow edge */}
-        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-purple-500/20 via-orange-500/10 to-transparent" />
+        <div className="absolute top-0 right-0 w-px h-full bg-linear-to-b from-purple-500/20 via-orange-500/10 to-transparent" />
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-6 pb-4">
@@ -137,7 +137,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               className="
                 w-full flex items-center justify-center gap-2
                 px-3 py-2.5 rounded-xl
-                bg-gradient-to-r from-orange-500 to-purple-600
+                bg-linear-to-r from-orange-500 to-purple-600
                 text-white text-[13px] font-medium
                 shadow-lg shadow-purple-500/10
               "

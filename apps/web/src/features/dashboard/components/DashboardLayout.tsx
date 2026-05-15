@@ -16,10 +16,10 @@ export function DashboardLayout() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,179,237,0.08),transparent_60%)]" />
 
         {/* grid noise */}
-        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.6)_1px,transparent_0)] bg-[length:24px_24px]" />
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_1px_1px,rgba(148,163,184,0.6)_1px,transparent_0)] bg-size-[24px_24px]" />
 
         {/* vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/40" />
       </div>
 
       <div className="flex relative">
@@ -52,7 +52,7 @@ export function DashboardLayout() {
 
           {/* Content */}
           <main className="flex-1 px-4 sm:px-6 py-10">
-            <div className="max-w-[1100px] mx-auto">
+            <div className="max-w-275 mx-auto">
               <Outlet />
             </div>
           </main>

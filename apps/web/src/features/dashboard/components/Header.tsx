@@ -39,7 +39,7 @@ export function Header({ onMenuClick }: HeaderProps) {
     <motion.header
       className="
         sticky top-0 z-30
-        h-[64px]
+        h-16
         flex items-center justify-between
         px-5 sm:px-6
         bg-[#0B0C10]/80 backdrop-blur-xl

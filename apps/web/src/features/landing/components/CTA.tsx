@@ -9,8 +9,8 @@ function LiveDot() {
   return (
     <div className="flex items-center gap-2">
       <span className="relative flex w-2 h-2">
-        <span className="absolute inline-flex w-full h-full rounded-full bg-[#F97316] opacity-75 animate-ping" />
-        <span className="relative w-2 h-2 rounded-full bg-[#F97316]" />
+        <span className="absolute inline-flex w-full h-full rounded-full bg-brand opacity-75 animate-ping" />
+        <span className="relative w-2 h-2 rounded-full bg-brand" />
       </span>
       <span className="text-[11px] text-white/40 tracking-wide">
         Live session preview
@@ -31,7 +31,7 @@ function PreviewCard() {
   ];
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+    <div className="rounded-2xl border border-white/10 bg-white/2 p-6">
       <div className="flex items-center justify-between mb-5">
         <LiveDot />
         <span className="text-[10px] text-white/30 font-mono">AI engine</span>
@@ -51,7 +51,7 @@ function PreviewCard() {
         ))}
       </div>
 
-      <div className="mt-6 h-[1px] bg-gradient-to-r from-[#F97316] via-[#C084FC] to-transparent opacity-40" />
+      <div className="mt-6 h-px bg-linear-to-r from-brand via-[#C084FC] to-transparent opacity-40" />
 
       <p className="mt-4 text-[12px] text-white/30 leading-relaxed">
         Personalized interview flow based on your CV and target role.
@@ -74,12 +74,12 @@ export function Cta() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.6 }}
-        className="max-w-5xl mx-auto rounded-3xl border border-white/10 bg-white/[0.02] overflow-hidden"
+        className="max-w-5xl mx-auto rounded-3xl border border-white/10 bg-white/2 overflow-hidden"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-10 lg:p-14 items-center">
           {/* LEFT */}
           <div>
-            <p className="text-[11px] tracking-[0.2em] uppercase text-[#F97316] mb-4">
+            <p className="text-[11px] tracking-[0.2em] uppercase text-brand mb-4">
               Get started
             </p>
 
@@ -96,7 +96,7 @@ export function Cta() {
 
             {/* CTA buttons */}
             <div className="flex flex-wrap gap-3 mt-8">
-              <Button className="bg-[#F97316] text-black hover:bg-[#fb923c] font-semibold">
+              <Button className="bg-brand text-black hover:bg-[#fb923c] font-semibold">
                 Start for free
               </Button>
 
@@ -126,7 +126,7 @@ export function Cta() {
         </div>
 
         {/* bottom accent line */}
-        <div className="h-[1px] bg-gradient-to-r from-transparent via-[#F97316]/40 to-transparent" />
+        <div className="h-px bg-linear-to-r from-transparent via-brand/40 to-transparent" />
       </motion.div>
     </section>
   );

@@ -11,12 +11,12 @@ export function Footer() {
   return (
     <footer className="relative border-t border-white/10 bg-[#0B0C10] overflow-hidden">
       {/* subtle glow line */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#A855F7]/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-[#A855F7]/30 to-transparent" />
 
       {/* soft background glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute w-[500px] h-[500px] bg-orange-500/5 blur-3xl rounded-full -top-40 left-1/4" />
-        <div className="absolute w-[400px] h-[400px] bg-[#A855F7]/5 blur-3xl rounded-full bottom-0 right-10" />
+        <div className="absolute w-125 h-125 bg-orange-500/5 blur-3xl rounded-full -top-40 left-1/4" />
+        <div className="absolute w-100 h-100 bg-[#A855F7]/5 blur-3xl rounded-full bottom-0 right-10" />
       </div>
 
       <div className="max-w-6xl mx-auto px-6 lg:px-16 py-16 relative z-10">

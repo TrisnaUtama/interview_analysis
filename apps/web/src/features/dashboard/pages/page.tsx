@@ -79,8 +79,8 @@ export default function OverviewPage() {
       {/* ───────── BACKGROUND ───────── */}
       <div className="fixed inset-0 -z-10 bg-[#070A0F]" />
       <div className="fixed inset-0 -z-10">
-        <div className="absolute top-[-200px] left-1/2 w-[600px] h-[600px] -translate-x-1/2 bg-orange-500/10 blur-[140px] rounded-full" />
-        <div className="absolute bottom-[-200px] right-[-100px] w-[500px] h-[500px] bg-cyan-500/10 blur-[140px] rounded-full" />
+        <div className="absolute -top-50 left-1/2 w-150 h-150 -translate-x-1/2 bg-orange-500/10 blur-[140px] rounded-full" />
+        <div className="absolute -bottom-50 -right-25 w-125 h-125 bg-cyan-500/10 blur-[140px] rounded-full" />
       </div>
 
       {/* ───────── HERO ───────── */}
@@ -128,7 +128,7 @@ export default function OverviewPage() {
               className="
                 rounded-2xl
                 border border-white/10
-                bg-white/[0.03]
+                bg-white/3
                 backdrop-blur-xl
                 p-5
                 hover:border-orange-400/20
@@ -173,7 +173,7 @@ export default function OverviewPage() {
                       ${
                         a.primary
                           ? "bg-white text-black border-white"
-                          : "bg-white/[0.03] text-white border-white/10 hover:border-orange-400/30"
+                          : "bg-white/3 text-white border-white/10 hover:border-orange-400/30"
                       }
                     `}
                   >
@@ -213,7 +213,7 @@ export default function OverviewPage() {
 
       {/* ───────── EMPTY STATE ───────── */}
       <FadeUp delay={0.15}>
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-10 text-center">
+        <div className="rounded-2xl border border-white/10 bg-white/3 backdrop-blur-xl p-10 text-center">
           <div className="w-11 h-11 mx-auto rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
             <Clock size={18} className="text-slate-400" />
           </div>
@@ -250,7 +250,7 @@ export default function OverviewPage() {
           ].map((t) => (
             <div
               key={t}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 hover:border-orange-400/20 transition"
+              className="rounded-2xl border border-white/10 bg-white/3 p-5 hover:border-orange-400/20 transition"
             >
               <p className="text-sm font-medium text-white">{t}</p>
               <p className="text-xs text-slate-500 mt-1">
@@ -263,7 +263,7 @@ export default function OverviewPage() {
 
       {/* ───────── UPGRADE ───────── */}
       <FadeUp delay={0.25}>
-        <div className="rounded-2xl border border-white/10 bg-gradient-to-r from-white/[0.04] to-transparent p-6 flex items-center justify-between">
+        <div className="rounded-2xl border border-white/10 bg-linear-to-r from-white/4 to-transparent p-6 flex items-center justify-between">
           <div>
             <p className="text-white font-medium">
               Upgrade to Pro <span className="text-orange-400">+</span>

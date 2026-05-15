@@ -48,7 +48,7 @@ export function ConfirmModal() {
         <>
           {/* backdrop */}
           <motion.div
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -56,7 +56,7 @@ export function ConfirmModal() {
           />
 
           {/* modal */}
-          <div className="fixed inset-0 z-[101] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-101 flex items-center justify-center p-4">
             <motion.div
               className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0B0F19] shadow-2xl overflow-hidden"
               initial={{ opacity: 0, scale: 0.96, y: 10 }}
@@ -64,7 +64,7 @@ export function ConfirmModal() {
               exit={{ opacity: 0, scale: 0.96, y: 10 }}
             >
               {/* top glow */}
-              <div className="h-px bg-gradient-to-r from-transparent via-orange-400/50 to-transparent" />
+              <div className="h-px bg-linear-to-r from-transparent via-orange-400/50 to-transparent" />
 
               <div className="p-6">
                 {/* header */}
