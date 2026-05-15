@@ -17,15 +17,12 @@ CREATE TABLE IF NOT EXISTS interview_criteria_scores (
 );
 
 CREATE INDEX IF NOT EXISTS idx_criteria_scores_analysis_id ON interview_criteria_scores (interview_analysis_id);
-
 CREATE INDEX IF NOT EXISTS idx_criteria_scores_criteria_id ON interview_criteria_scores (scoring_criteria_id);
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
 DROP INDEX IF EXISTS idx_criteria_scores_criteria_id;
-
 DROP INDEX IF EXISTS idx_criteria_scores_analysis_id;
-
 DROP TABLE IF EXISTS interview_criteria_scores;
 -- +goose StatementEnd

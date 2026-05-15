@@ -26,15 +26,15 @@ type service struct {
 	repo     Repository
 	cfg      *configs.Setting
 	minio    *minio.MinioClient
-	aiClient *httpclient.AIClient
+	resumeClient *httpclient.ResumeClient
 }
 
-func NewService(repo Repository, cfg *configs.Setting, minio *minio.MinioClient, aiClient *httpclient.AIClient) Service {
+func NewService(repo Repository, cfg *configs.Setting, minio *minio.MinioClient, resumeClient *httpclient.ResumeClient) Service {
 	return &service{
 		repo:     repo,
 		cfg:      cfg,
 		minio:    minio,
-		aiClient: aiClient,
+		resumeClient: resumeClient,
 	}
 }
 
@@ -78,7 +78,7 @@ func (s *service) processResume(resumeID, userID string, file multipart.File, he
 		return
 	}
 
-	if err := s.aiClient.AnalyzeResume(ctx, resumeID, result.Filename); err != nil {
+	if err := s.resumeClient.AnalyzeResume(ctx, resumeID, result.Filename); err != nil {
 		logger.Error("failed to send resume to AI service",
 			zap.String("resume_id", resumeID),
 			zap.Error(err),

@@ -12,15 +12,12 @@ CREATE TABLE IF NOT EXISTS interview_stage_logs (
 );
 
 CREATE INDEX IF NOT EXISTS idx_stage_logs_interview_id ON interview_stage_logs (interview_id);
-
 CREATE INDEX IF NOT EXISTS idx_stage_logs_stage ON interview_stage_logs (stage);
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
 DROP INDEX IF EXISTS idx_stage_logs_stage;
-
 DROP INDEX IF EXISTS idx_stage_logs_interview_id;
-
 DROP TABLE IF EXISTS interview_stage_logs;
 -- +goose StatementEnd

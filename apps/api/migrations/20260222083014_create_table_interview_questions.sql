@@ -15,19 +15,14 @@ CREATE TABLE IF NOT EXISTS interview_questions (
 );
 
 CREATE INDEX idx_interview_questions_interview_id ON interview_questions (interview_id);
-
 CREATE INDEX idx_interview_questions_parent_question ON interview_questions (parent_question_id);
-
 CREATE INDEX idx_interview_questions_deleted_at ON interview_questions (deleted_at);
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
 DROP INDEX IF EXISTS idx_interview_questions_deleted_at;
-
 DROP INDEX IF EXISTS idx_interview_questions_parent_question;
-
 DROP INDEX IF EXISTS idx_interview_questions_interview_id;
-
 DROP TABLE IF EXISTS interview_questions;
 -- +goose StatementEnd
