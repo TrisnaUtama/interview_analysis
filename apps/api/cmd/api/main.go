@@ -33,7 +33,7 @@ func main() {
 		log.Fatalf("Failed to connect to MinIO: %v", err)
 	}
 
-	aiClient := httpclient.NewAIClient(cfg.AI.AiUrl, cfg.AI.ApiKey)
+	resumeClient := httpclient.NewResumeClient(cfg.AI.AiUrl, cfg.AI.ApiKey)
 
 	logger.Init(cfg.App.Env)
 	defer logger.Log.Sync()
@@ -48,7 +48,7 @@ func main() {
 	}
 	defer db.Close()
 
-	srv := server.New(cfg, db, minioClient, aiClient)
+	srv := server.New(cfg, db, minioClient, resumeClient)
 
 	serverAddr := fmt.Sprintf(":%d", cfg.App.Port)
 	log.Printf("Server is running on http://localhost%s", serverAddr)

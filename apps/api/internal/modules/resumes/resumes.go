@@ -10,12 +10,15 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func Init(r chi.Router, db *pgxpool.Pool, cfg *configs.Setting, minio *minio.MinioClient, aiClient *httpclient.AIClient) {
+func Init(r chi.Router, db *pgxpool.Pool, cfg *configs.Setting, minio *minio.MinioClient, aiClient *httpclient.ResumeClient) {
 	repo := NewRepository(db)
 	service := NewService(repo, cfg, minio, aiClient)
 	handler := NewHandler(service, cfg)
 
-	r.Post("/internal/resumes/{id}/callback", handler.Callback)
+	r.Route("/internal/resumes", func(r chi.Router) {
+		r.Use(middlewares.InternalOnly(cfg.AI.ApiKey))
+		r.Patch("/{id}/callback", handler.Callback)
+	})
 	r.Route("/resumes", func(r chi.Router) {
 		r.Use(middlewares.JWTAuth(cfg))
 		r.Post("/", handler.Upload)

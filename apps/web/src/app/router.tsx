@@ -9,6 +9,7 @@ import { guardAuth, guardGuest } from "@/app/guard";
 import LandingPage from "@/features/landing/pages/page";
 import NotFoundPage from "@/features/errors/NotFoundPage";
 import { DashboardLayout } from "@/features/dashboard/components/DashboardLayout";
+import { ConfirmModal } from "@/components/common/ConfirmationModal";
 
 // ── Lazy pages ──
 const LoginPage = lazy(() => import("@/features/auth/pages/page"));
@@ -44,7 +45,12 @@ function LazyPage({
 
 // Root
 const rootRoute = createRootRoute({
-  component: () => <Outlet />,
+  component: () => (
+    <>
+      <Outlet />
+      <ConfirmModal />
+    </>
+  ),
   notFoundComponent: NotFoundPage,
 });
 

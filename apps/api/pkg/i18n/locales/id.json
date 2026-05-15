@@ -11,5 +11,6 @@
     "auth.logout_success"        : "Logout berhasil",
     "auth.token_refreshed"       : "Token berhasil diperbarui",
     "auth.invalid_token"         : "Token tidak valid atau sudah kadaluarsa",
-    "auth.me"                    : "Berhasil mendapatkan data user"
+    "auth.me"                    : "Berhasil mendapatkan data user",
+    "jobs.created"                 : "Berhasil menambhkan jenis pekerjaan"
 }

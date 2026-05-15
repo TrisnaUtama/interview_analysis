@@ -1,31 +1,25 @@
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ExclamationTriangleIcon,
-  ExclamationCircleIcon,
-  QuestionMarkCircleIcon,
   XMarkIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
+
 import { Button } from "@/components/ui/button";
 import { useConfirmStore } from "@/stores/confirm.store";
 
-const VARIANT_CONFIG = {
+const VARIANT = {
   danger: {
     icon: ExclamationTriangleIcon,
-    iconClass: "text-red-400",
-    iconBg: "bg-red-400/10 border-red-400/20",
-    confirmClass: "bg-red-500/90 hover:bg-red-500 text-white border-none",
-  },
-  warning: {
-    icon: ExclamationCircleIcon,
-    iconClass: "text-amber-400",
-    iconBg: "bg-amber-400/10 border-amber-400/20",
-    confirmClass: "bg-amber-500/90 hover:bg-amber-500 text-white border-none",
+    color: "text-red-400",
+    bg: "bg-red-500/10 border-red-500/20",
+    btn: "bg-red-500 hover:bg-red-400 text-white",
   },
   default: {
     icon: QuestionMarkCircleIcon,
-    iconClass: "text-brand",
-    iconBg: "bg-brand/10 border-brand/20",
-    confirmClass: "bg-brand text-canvas hover:bg-[#90CDF4] border-none",
+    color: "text-orange-400",
+    bg: "bg-orange-500/10 border-orange-500/20",
+    btn: "bg-gradient-to-r from-orange-500 to-purple-600 text-white",
   },
 };
 
@@ -34,15 +28,15 @@ export function ConfirmModal() {
 
   if (!options) return null;
 
-  const variant = options.variant ?? "default";
-  const config = VARIANT_CONFIG[variant];
+  const config =
+    options.variant === "danger" ? VARIANT.danger : VARIANT.default;
   const Icon = config.icon;
 
   const handleConfirm = async () => {
     try {
       setLoading(true);
       await options.onConfirm();
-      useConfirmStore.getState().cancel();
+      cancel();
     } catch {
       setLoading(false);
     }
@@ -52,104 +46,68 @@ export function ConfirmModal() {
     <AnimatePresence>
       {open && (
         <>
-          {/* Backdrop */}
+          {/* backdrop */}
           <motion.div
             className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
             onClick={() => !isLoading && cancel()}
           />
 
-          {/* Modal */}
-          <div className="fixed inset-0 z-101 flex items-center justify-center p-4 pointer-events-none">
+          {/* modal */}
+          <div className="fixed inset-0 z-101 flex items-center justify-center p-4">
             <motion.div
-              className="w-full max-w-100 bg-[#0D1117] border border-white/8 rounded-2xl shadow-2xl pointer-events-auto overflow-hidden"
-              initial={{ opacity: 0, scale: 0.95, y: 8 }}
+              className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0B0F19] shadow-2xl overflow-hidden"
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 8 }}
-              transition={{ duration: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
             >
-              {/* Top accent line */}
-              <div
-                className={`h-px w-full ${
-                  variant === "danger"
-                    ? "bg-linear-to-r from-transparent via-red-500/50 to-transparent"
-                    : variant === "warning"
-                      ? "bg-linear-to-r from-transparent via-amber-500/50 to-transparent"
-                      : "bg-linear-to-r from-transparent via-brand/50 to-transparent"
-                }`}
-              />
+              {/* top glow */}
+              <div className="h-px bg-linear-to-r from-transparent via-orange-400/50 to-transparent" />
 
               <div className="p-6">
-                {/* Header */}
-                <div className="flex items-start justify-between gap-4 mb-5">
-                  <div className="flex items-start gap-4">
-                    {/* Icon */}
-                    <div
-                      className={`p-2.5 rounded-xl border ${config.iconBg} shrink-0`}
-                    >
-                      <Icon className={`size-4.5 ${config.iconClass}`} />
-                    </div>
-
-                    <div>
-                      <h3 className="font-display font-bold text-white text-[16px] tracking-[-0.3px] leading-tight">
-                        {options.title}
-                      </h3>
-                      <p className="text-[13px] text-muted-text leading-relaxed mt-1.5">
-                        {options.description}
-                      </p>
-                    </div>
+                {/* header */}
+                <div className="flex items-start gap-4">
+                  <div className={`p-2.5 rounded-xl border ${config.bg}`}>
+                    <Icon className={`w-4 h-4 ${config.color}`} />
                   </div>
 
-                  {/* Close */}
-                  {!isLoading && (
-                    <button
-                      onClick={cancel}
-                      className="text-[#374151] hover:text-white transition-colors shrink-0 mt-0.5"
-                    >
-                      <XMarkIcon className="size-3.75" />
-                    </button>
-                  )}
+                  <div className="flex-1">
+                    <h3 className="text-white font-semibold">
+                      {options.title}
+                    </h3>
+                    <p className="text-sm text-white/50 mt-1">
+                      {options.description}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={cancel}
+                    className="text-white/30 hover:text-white"
+                  >
+                    <XMarkIcon className="w-4 h-4" />
+                  </button>
                 </div>
 
-                {/* Divider */}
-                <div className="border-t border-white/6 mb-5" />
-
-                {/* Actions */}
-                <div className="flex gap-2.5 justify-end">
+                {/* actions */}
+                <div className="flex justify-end gap-2 mt-6">
                   <Button
                     variant="outline"
-                    size="sm"
                     onClick={cancel}
-                    disabled={isLoading}
-                    className="bg-transparent border-white/8 text-[#9CA3AF] hover:text-white hover:bg-white/4 text-[13px] cursor-pointer"
+                    className="bg-white/5 border-white/10 text-white/60 hover:text-white"
                   >
-                    {options.cancelLabel ?? "Cancel"}
+                    Cancel
                   </Button>
+
                   <Button
-                    size="sm"
                     onClick={handleConfirm}
                     disabled={isLoading}
-                    className={`text-[13px] cursor-pointer font-medium min-w-22.5 ${config.confirmClass}`}
+                    className={config.btn}
                   >
-                    {isLoading ? (
-                      <span className="flex items-center gap-2">
-                        <motion.span
-                          className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white block"
-                          animate={{ rotate: 360 }}
-                          transition={{
-                            duration: 0.7,
-                            repeat: Infinity,
-                            ease: "linear",
-                          }}
-                        />
-                        Loading...
-                      </span>
-                    ) : (
-                      (options.confirmLabel ?? "Confirm")
-                    )}
+                    {isLoading
+                      ? "Loading..."
+                      : (options.confirmLabel ?? "Confirm")}
                   </Button>
                 </div>
               </div>

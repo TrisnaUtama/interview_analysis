@@ -5,12 +5,12 @@ import (
 	"time"
 )
 
-type AIClient struct {
+type ResumeClient struct {
 	client *Client
 }
 
-func NewAIClient(baseURL, apiKey string) *AIClient {
-	return &AIClient{
+func NewResumeClient(baseURL, apiKey string) *ResumeClient {
+	return &ResumeClient{
 		client: NewClient(baseURL,
 			WithHeader("X-Internal-Secret", apiKey),
 			WithTimeout(2*time.Minute),
@@ -23,7 +23,7 @@ type AnalyzeResumeRequest struct {
 	FilePath string `json:"file_path"`
 }
 
-func (a *AIClient) AnalyzeResume(ctx context.Context, resumeID, filePath string) error {
+func (a *ResumeClient) AnalyzeResume(ctx context.Context, resumeID, filePath string) error {
 	var result map[string]any
 
 	_, err := a.client.Post(ctx, "resumes/analyze", AnalyzeResumeRequest{

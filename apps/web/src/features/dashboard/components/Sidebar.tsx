@@ -9,21 +9,38 @@ import {
   Plus,
   X,
   LogOut,
+  CreditCard,
+  Settings,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { PulseDot } from "@/features/landing/components/ui/PulseDot";
 import { useConfirm } from "@/stores/confirm.store";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
-  { label: "Overview", icon: LayoutDashboard, path: "/dashboard" },
-  { label: "Resumes", icon: FileText, path: "/dashboard/resumes" },
-  { label: "Jobs", icon: Briefcase, path: "/dashboard/jobs" },
-  { label: "Interviews", icon: Mic, path: "/dashboard/interviews" },
-  { label: "Results", icon: BarChart3, path: "/dashboard/results" },
+const NAV_SECTIONS = [
+  {
+    label: "Workspace",
+    items: [
+      { label: "Overview", icon: LayoutDashboard, path: "/dashboard" },
+      { label: "Resumes", icon: FileText, path: "/dashboard/resumes" },
+      { label: "Jobs", icon: Briefcase, path: "/dashboard/jobs" },
+    ],
+  },
+  {
+    label: "Practice",
+    items: [
+      { label: "Interviews", icon: Mic, path: "/dashboard/interviews" },
+      { label: "Results", icon: BarChart3, path: "/dashboard/results" },
+    ],
+  },
+  {
+    label: "Account",
+    items: [
+      { label: "Billing", icon: CreditCard, path: "/dashboard/billing" },
+      { label: "Settings", icon: Settings, path: "/dashboard/settings" },
+    ],
+  },
 ];
 
 interface SidebarProps {
@@ -35,6 +52,18 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const { user } = useAuthStore();
   const { logout, isLoggingOut } = useAuth();
   const confirm = useConfirm();
+  const handleLogout = () => {
+    confirm({
+      title: "Sign out",
+      description: "Are you sure you want to sign out?",
+      confirmLabel: "Sign out",
+      cancelLabel: "Cancel",
+      variant: "danger",
+      onConfirm: async () => {
+        await logout();
+      },
+    });
+  };
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
 
@@ -43,27 +72,20 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     return currentPath.startsWith(path);
   };
 
-  const handleLogout = () => {
-    confirm({
-      title: "Sign out",
-      description:
-        "Are you sure you want to sign out? You'll need to log in again to access your dashboard.",
-      confirmLabel: "Sign out",
-      cancelLabel: "Stay",
-      variant: "default",
-      onConfirm: async () => {
-        await logout();
-      },
-    });
-  };
+  const initials =
+    user?.name
+      ?.split(" ")
+      .map((n) => n[0])
+      .slice(0, 2)
+      .join("") ?? "U";
 
   return (
     <>
-      {/* Mobile overlay */}
+      {/* Overlay */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -75,107 +97,148 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {/* Sidebar */}
       <motion.aside
         className={cn(
-          "fixed left-0 top-0 z-50 h-full w-60 flex flex-col",
-          "bg-canvas border-r border-white/6",
-          "lg:translate-x-0 lg:static lg:z-auto",
+          "fixed left-0 top-0 z-50 h-full w-67.5 flex flex-col",
+          "bg-[#0B0C10] border-r border-white/10",
+          "lg:static lg:translate-x-0",
         )}
         initial={false}
         animate={{ x: open ? 0 : "-100%" }}
-        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+        transition={{ type: "spring", damping: 30, stiffness: 280 }}
       >
-        {/* Logo */}
-        <div className="flex items-center justify-between px-5 py-5 border-b border-white/6">
-          <div className="flex items-center gap-2 font-display text-[16px] font-extrabold tracking-tight text-white">
-            <PulseDot />
-            InterviewAI
+        {/* glow edge */}
+        <div className="absolute top-0 right-0 w-px h-full bg-linear-to-b from-purple-500/20 via-orange-500/10 to-transparent" />
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 pt-6 pb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <Mic size={14} className="text-orange-400" />
+            </div>
+
+            <span className="font-semibold text-white text-[15px] tracking-tight">
+              InterviewAI
+            </span>
           </div>
+
           <button
             onClick={onClose}
-            className="lg:hidden text-[#4B5563] hover:text-white transition-colors"
+            className="lg:hidden text-white/40 hover:text-white"
           >
             <X size={16} />
           </button>
         </div>
 
-        {/* Create Session CTA */}
-        <div className="px-4 py-4 border-b border-white/6">
+        {/* CTA */}
+        <div className="px-4 mb-5">
           <Link to="/dashboard/session/new">
-            <Button className="w-full bg-brand/10 border border-brand/20 text-brand hover:bg-brand/20 hover:text-brand font-medium text-[13px] gap-2 justify-start">
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              className="
+                w-full flex items-center justify-center gap-2
+                px-3 py-2.5 rounded-xl
+                bg-linear-to-r from-orange-500 to-purple-600
+                text-white text-[13px] font-medium
+                shadow-lg shadow-purple-500/10
+              "
+            >
               <Plus size={14} />
               New Session
-            </Button>
+            </motion.button>
           </Link>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 px-3 py-4 flex flex-col gap-0.5 overflow-y-auto">
-          <p className="text-[10px] font-semibold tracking-[0.12em] uppercase text-[#374151] px-3 mb-2">
-            Menu
-          </p>
-          {NAV_ITEMS.map((item) => {
-            const active = isActive(item.path);
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => onClose()}
-                className="no-underline"
-              >
-                <motion.div
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors duration-150 cursor-pointer group",
-                    active
-                      ? "bg-brand/10 text-brand"
-                      : "text-muted-text hover:text-[#E8EAF0] hover:bg-white/4",
-                  )}
-                  whileHover={{ x: 2 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <item.icon
-                    size={15}
-                    className={
-                      active
-                        ? "text-brand"
-                        : "text-[#4B5563] group-hover:text-[#9CA3AF]"
-                    }
-                  />
-                  {item.label}
-                  {active && (
-                    <motion.div
-                      layoutId="active-nav"
-                      className="ml-auto w-1 h-1 rounded-full bg-brand"
-                    />
-                  )}
-                </motion.div>
-              </Link>
-            );
-          })}
+        {/* NAV */}
+        <nav className="flex-1 px-3 overflow-y-auto flex flex-col gap-6">
+          {NAV_SECTIONS.map((section) => (
+            <div key={section.label}>
+              <p className="text-[10px] tracking-[0.18em] uppercase text-white/30 px-3 mb-2">
+                {section.label}
+              </p>
+
+              <div className="flex flex-col gap-1">
+                {section.items.map((item) => {
+                  const active = isActive(item.path);
+
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={onClose}
+                      className="no-underline"
+                    >
+                      <div
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] transition-all relative",
+                          active
+                            ? "text-white"
+                            : "text-white/50 hover:text-white",
+                        )}
+                      >
+                        {/* active glow pill */}
+                        {active && (
+                          <motion.div
+                            layoutId="sidebar-active"
+                            className="
+                              absolute inset-0 rounded-xl
+                              bg-white/5 border border-white/10
+                            "
+                            transition={{
+                              type: "spring",
+                              stiffness: 300,
+                              damping: 30,
+                            }}
+                          />
+                        )}
+
+                        <item.icon
+                          size={15}
+                          className={
+                            active ? "text-orange-400" : "text-white/40"
+                          }
+                        />
+
+                        <span className="flex-1 font-medium relative z-10">
+                          {item.label}
+                        </span>
+
+                        {active && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-orange-400 relative z-10" />
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </nav>
 
         {/* User */}
-        <div className="px-3 py-4 border-t border-white/6">
-          <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white/3 border border-white/6">
-            <Avatar className="size-7 shrink-0">
+        <div className="px-4 py-4 mt-auto border-t border-white/10">
+          <div className="flex items-center gap-3">
+            <Avatar className="size-8 rounded-xl">
               <AvatarImage src={user?.avatar_url} />
-              <AvatarFallback className="bg-brand/10 text-brand text-[11px] font-semibold">
-                {user?.name?.charAt(0) ?? "U"}
+              <AvatarFallback className="bg-white/5 text-orange-400 text-[11px] font-semibold rounded-xl">
+                {initials}
               </AvatarFallback>
             </Avatar>
+
             <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-medium text-white truncate">
+              <p className="text-[13px] font-medium text-white truncate">
                 {user?.name}
               </p>
-              <p className="text-[11px] text-[#4B5563] truncate">
+              <p className="text-[11px] text-white/40 truncate">
                 {user?.email}
               </p>
             </div>
+
             <button
               onClick={handleLogout}
               disabled={isLoggingOut}
-              className="text-[#374151] hover:text-red-400 transition-colors shrink-0"
-              title="Sign out"
+              className="text-white/40 hover:text-orange-400 transition"
             >
-              <LogOut size={13} />
+              <LogOut size={14} />
             </button>
           </div>
         </div>
