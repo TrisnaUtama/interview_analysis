@@ -109,10 +109,10 @@ export function Cta() {
             </div>
 
             {/* Trust line */}
-            <div className="flex items-center gap-5 mt-8 text-[12px] text-white/30">
+            {/* <div className="flex items-center gap-5 mt-8 text-[12px] text-white/30">
               <span>✓ No credit card</span>
               <span>✓ Cancel anytime</span>
-            </div>
+            </div> */}
           </div>
 
           {/* RIGHT */}

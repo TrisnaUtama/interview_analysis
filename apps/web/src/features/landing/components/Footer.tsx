@@ -1,6 +1,3 @@
-import { motion } from "framer-motion";
-import { PulseDot } from "./ui/PulseDot";
-
 const FOOTER_LINKS = {
   Product: ["Features", "How it works", "Pricing", "Updates"],
   Company: ["About", "Blog", "Careers", "Contact"],
@@ -24,8 +21,7 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
           {/* Brand */}
           <div className="sm:col-span-2">
-            <div className="flex items-center gap-2 font-semibold text-white text-[16px]">
-              <PulseDot />
+            <div className="flex items-center gap-2 text-[17px] font-extrabold tracking-tight text-white">
               TalkHire
             </div>
 
@@ -33,16 +29,6 @@ export function Footer() {
               Practice interviews that feel real. Get feedback that actually
               improves how you speak, think, and answer.
             </p>
-
-            {/* status */}
-            <div className="mt-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5">
-              <motion.span
-                className="w-1.5 h-1.5 rounded-full bg-orange-400"
-                animate={{ opacity: [1, 0.4, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span className="text-xs text-white/60">System stable</span>
-            </div>
           </div>
 
           {/* Links */}
