@@ -42,7 +42,7 @@ function StepItem({ step, index }: { step: (typeof STEPS)[0]; index: number }) {
         transition={{ duration: 0.5, delay: index * 0.08 }}
         className="space-y-3"
       >
-        <h3 className="font-display text-[22px] md:text-[26px] text-white tracking-[-0.5px] leading-tight">
+        <h3 className=" text-[22px] md:text-[26px] text-white tracking-[-0.5px] leading-tight">
           {step.title}
         </h3>
 
@@ -82,7 +82,7 @@ export function HowItWorks() {
             How it works
           </p>
 
-          <h2 className="mt-4 font-display text-white text-[40px] md:text-[54px] leading-[1.05] tracking-[-1px]">
+          <h2 className="mt-4 text-white text-[40px] md:text-[54px] leading-[1.05] tracking-[-1px]">
             Simple steps.
             <br />
             <span className="text-[#C084FC]">Real improvement.</span>

@@ -83,7 +83,7 @@ export function Cta() {
               Get started
             </p>
 
-            <h2 className="font-display text-white text-[42px] lg:text-[54px] leading-[1.05] tracking-[-1px]">
+            <h2 className=" text-white text-[42px] lg:text-[54px] leading-[1.05] tracking-[-1px]">
               Your next interview
               <br />
               starts here.
