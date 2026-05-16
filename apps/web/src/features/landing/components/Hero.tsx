@@ -33,26 +33,6 @@ function Glow() {
   );
 }
 
-/* ─── Minimal floating cards (NOT AI-looking anymore) ─── */
-function FloatingTag({
-  text,
-  className,
-}: {
-  text: string;
-  className?: string;
-}) {
-  return (
-    <motion.div
-      className={`absolute px-3 py-1.5 rounded-full border text-[11px] backdrop-blur-md ${className}`}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      {text}
-    </motion.div>
-  );
-}
-
 export function Hero() {
   const ref = useRef(null);
 
@@ -82,7 +62,7 @@ export function Hero() {
       />
 
       {/* FLOAT TAGS (minimal, not AI-looking) */}
-      <FloatingTag
+      {/* <FloatingTag
         text="Real interview simulation"
         className="top-24 left-10 border-orange-500/20 text-orange-300"
       />
@@ -95,13 +75,12 @@ export function Hero() {
       <FloatingTag
         text="Instant feedback"
         className="top-28 right-14 border-orange-500/20 text-orange-300"
-      />
+      /> */}
 
       {/* MAIN CONTENT */}
       <motion.div style={{ y }} className="relative z-10 max-w-3xl text-center">
         {/* pill */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[12px] text-white/70 mb-8">
-          <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
           Interview practice platform
         </div>
 
@@ -114,7 +93,8 @@ export function Hero() {
         {/* subtitle */}
         <p className="mt-6 text-[15px] text-white/60 leading-relaxed max-w-xl mx-auto">
           Simulated interviews with real-time feedback on clarity, structure,
-          and confidence — so you improve without even noticing.
+          and confidence — text-[17px] font-extrabold tracking-tight text-white
+          cursor-pointerso you improve without even noticing.
         </p>
 
         {/* actions */}
@@ -132,9 +112,9 @@ export function Hero() {
         </div>
 
         {/* small trust line */}
-        <p className="mt-6 text-[12px] text-white/40">
+        {/* <p className="mt-6 text-[12px] text-white/40">
           No credit card required • Setup in 30 seconds
-        </p>
+        </p> */}
       </motion.div>
     </section>
   );

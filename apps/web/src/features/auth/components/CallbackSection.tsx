@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "@tanstack/react-router";
 import { useMe } from "../hooks/useMe";
-import { PulseDot } from "@/features/landing/components/ui/PulseDot";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 
 const STEPS = [
@@ -158,7 +157,6 @@ export default function CallbackPage() {
       >
         {/* logo */}
         <div className="flex items-center gap-2 text-white font-bold">
-          <PulseDot />
           TalkHire
         </div>
 
