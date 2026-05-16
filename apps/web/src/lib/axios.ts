@@ -4,7 +4,7 @@ import { router } from "@/app/router";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true, // kirim cookie otomatis
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -31,7 +31,7 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const originalRequest = err.config;
-    
+
     if (err.response?.status !== 401 || originalRequest._retry) {
       return Promise.reject(err);
     }

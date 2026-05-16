@@ -16,8 +16,8 @@ func Init(r chi.Router, db *pgxpool.Pool, cfg *configs.Setting, minio *minio.Min
 	handler := NewHandler(service, cfg)
 
 	r.Route("/internal/resumes", func(r chi.Router) {
-		r.Use(middlewares.InternalOnly(cfg.AI.ApiKey))
-		r.Patch("/{id}/callback", handler.Callback)
+		r.Use(middlewares.InternalOnly(cfg.App.Key))
+		r.Post("/{id}/callback", handler.Callback)
 	})
 	r.Route("/resumes", func(r chi.Router) {
 		r.Use(middlewares.JWTAuth(cfg))

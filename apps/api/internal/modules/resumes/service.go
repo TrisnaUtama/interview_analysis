@@ -23,17 +23,17 @@ type Service interface {
 }
 
 type service struct {
-	repo     Repository
-	cfg      *configs.Setting
-	minio    *minio.MinioClient
+	repo         Repository
+	cfg          *configs.Setting
+	minio        *minio.MinioClient
 	resumeClient *httpclient.ResumeClient
 }
 
 func NewService(repo Repository, cfg *configs.Setting, minio *minio.MinioClient, resumeClient *httpclient.ResumeClient) Service {
 	return &service{
-		repo:     repo,
-		cfg:      cfg,
-		minio:    minio,
+		repo:         repo,
+		cfg:          cfg,
+		minio:        minio,
 		resumeClient: resumeClient,
 	}
 }
@@ -96,16 +96,7 @@ func (s *service) processResume(resumeID, userID string, file multipart.File, he
 }
 
 func (s *service) HandleCallback(ctx context.Context, id string, payload CallbackResumeRequest) error {
-	logger.Info("received callback from AI service",
-		zap.String("resume_id", id),
-		zap.String("status", payload.Status),
-	)
-
 	if payload.Status == "failed" {
-		logger.Error("AI service failed to process resume",
-			zap.String("resume_id", id),
-			zap.String("error", payload.Error),
-		)
 		return s.repo.Update(ctx, id, UpdateResumeRequest{
 			AnalysisStatus: entities.JobAnalysisStatusFailed,
 		})
