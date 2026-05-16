@@ -13,6 +13,9 @@ INTERNAL_HEADERS = {
     "X-Internal-Secret": settings.app.MAIN_API_KEY,
 }
 
+logger.info(f"MAIN_API_KEY={settings.app.MAIN_API_KEY}")
+logger.info(f"HEADERS={INTERNAL_HEADERS}")
+
 
 @celery.task(
     bind=True,
@@ -56,6 +59,8 @@ async def _callback_success(resume_id: str, raw_text: str, parsed_data: dict):
             json={"raw_text": raw_text, "parsed_data": parsed_data},
             headers=INTERNAL_HEADERS,
         )
+        logger.info(f"MAIN_API_KEY={settings.app.MAIN_API_KEY}")
+        logger.info(f"HEADERS={INTERNAL_HEADERS}")
         response.raise_for_status()
         logger.info(f"Callback success sent | status={response.status_code}")
 

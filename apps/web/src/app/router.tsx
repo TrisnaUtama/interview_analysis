@@ -16,8 +16,8 @@ const LoginPage = lazy(() => import("@/features/auth/pages/page"));
 const CallbackPage = lazy(() => import("@/features/auth/pages/callback"));
 const OverviewPage = lazy(() => import("@/features/dashboard/pages/page"));
 
-// Placeholder pages
 const ResumesPage = lazy(() => import("@/features/resumes/pages/page"));
+const ResumeDetailPage = lazy(() => import("@/features/resumes/components/ResumeDetailPage"));
 const JobsPage = lazy(() => import("@/features/jobs/pages/page"));
 const InterviewsPage = lazy(() => import("@/features/interviews/pages/page"));
 const ResultsPage = lazy(() => import("@/features/results/pages/page"));
@@ -54,7 +54,7 @@ const rootRoute = createRootRoute({
   notFoundComponent: NotFoundPage,
 });
 
-//  Public routes
+// Public routes
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
@@ -74,7 +74,7 @@ const callbackRoute = createRoute({
   component: () => <LazyPage component={CallbackPage} />,
 });
 
-//  Dashboard
+// Dashboard
 const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dashboard",
@@ -92,6 +92,12 @@ const resumesRoute = createRoute({
   getParentRoute: () => dashboardRoute,
   path: "/resumes",
   component: () => <LazyPage component={ResumesPage} />,
+});
+
+const resumeDetailRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: "/resumes/$id",
+  component: () => <LazyPage component={ResumeDetailPage} />,
 });
 
 const jobsRoute = createRoute({
@@ -126,6 +132,7 @@ const routeTree = rootRoute.addChildren([
   dashboardRoute.addChildren([
     dashboardIndexRoute,
     resumesRoute,
+    resumeDetailRoute,
     jobsRoute,
     interviewsRoute,
     resultsRoute,
