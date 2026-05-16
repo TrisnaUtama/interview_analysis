@@ -67,7 +67,7 @@ export function Features() {
 
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mt-5 mb-16">
           <FadeUp delay={0.05}>
-            <h2 className="font-display text-white text-[42px] lg:text-[56px] leading-[1.05] tracking-[-1px] max-w-xl">
+            <h2 className=" text-white text-[42px] lg:text-[56px] leading-[1.05] tracking-[-1px] max-w-xl">
               Practice like it’s real.
               <br />
               <span className="text-[#C084FC]">Perform like it matters.</span>
@@ -104,7 +104,7 @@ export function Features() {
               </div>
 
               {/* Title */}
-              <h3 className="font-display text-[18px] text-white font-semibold tracking-[-0.3px]">
+              <h3 className="text-[18px] text-white font-semibold tracking-[-0.3px]">
                 {f.title}
               </h3>
 

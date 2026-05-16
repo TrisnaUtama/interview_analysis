@@ -26,7 +26,7 @@ export function Footer() {
           <div className="sm:col-span-2">
             <div className="flex items-center gap-2 font-semibold text-white text-[16px]">
               <PulseDot />
-              InterviewAI
+              TalkHire
             </div>
 
             <p className="text-sm text-white/50 mt-4 leading-relaxed max-w-sm">

@@ -58,12 +58,11 @@ export function Navbar() {
       >
         {/* ================= LOGO ================= */}
         <motion.div
-          className="flex items-center gap-2 font-display text-[17px] font-extrabold tracking-tight text-white cursor-pointer"
+          className="flex items-center gap-2  text-[17px] font-extrabold tracking-tight text-white cursor-pointer"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           whileHover={{ scale: 1.02 }}
         >
-          <span className="size-2.5 rounded-full bg-brand shadow-[0_0_20px_rgba(249,115,22,0.6)]" />
-          InterviewAI
+          TalkHire
         </motion.div>
 
         {/* ================= DESKTOP NAV ================= */}
@@ -103,7 +102,7 @@ export function Navbar() {
         {/* ================= RIGHT ACTIONS ================= */}
         <div className="flex items-center gap-3">
           <Button
-            className="hidden md:flex bg-brand hover:bg-brand/90 text-white text-[13px] shadow-[0_10px_30px_rgba(249,115,22,0.25)]"
+            className="hidden md:flex bg-brand hover:bg-brand/90 text-white text-[13px] shadow-[0_10px_30px_rgba(249,115,22,0.25)] cursor-pointer"
             onClick={() => navigate({ to: "/login" })}
           >
             Get Started
@@ -136,7 +135,7 @@ export function Navbar() {
               <motion.button
                 key={l}
                 onClick={() => handleNav(l)}
-                className="font-display font-bold text-[30px] tracking-[-1px] text-foreground hover:text-brand transition"
+                className=" font-bold text-[30px] tracking-[-1px] text-foreground hover:text-brand transition"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06 }}

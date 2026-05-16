@@ -140,7 +140,7 @@ export default function CallbackPage() {
   }
 
   return (
-    <div className="min-h-screen bg-canvas flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-black/10 flex items-center justify-center relative overflow-hidden">
       {/* background */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -159,7 +159,7 @@ export default function CallbackPage() {
         {/* logo */}
         <div className="flex items-center gap-2 text-white font-bold">
           <PulseDot />
-          InterviewAI
+          TalkHire
         </div>
 
         {/* spinner */}

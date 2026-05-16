@@ -116,7 +116,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
             </div>
 
             <span className="font-semibold text-white text-[15px] tracking-tight">
-              InterviewAI
+              TalkHire
             </span>
           </div>
 

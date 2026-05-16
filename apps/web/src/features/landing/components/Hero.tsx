@@ -119,13 +119,13 @@ export function Hero() {
 
         {/* actions */}
         <div className="flex items-center justify-center gap-3 mt-10">
-          <Button className="bg-orange-500 hover:bg-orange-400 text-black font-medium px-6">
+          <Button className="bg-orange-500 hover:bg-orange-400 text-white font-medium px-6 cursor-pointer">
             Start free practice
           </Button>
 
           <Button
             variant="outline"
-            className="border-white/15 text-black hover:bg-white/5 hover:text-white"
+            className="border-white/15 text-black hover:bg-white/5 hover:text-white cursor-pointer"
           >
             See demo
           </Button>
