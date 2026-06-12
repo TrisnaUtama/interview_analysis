@@ -24,6 +24,7 @@ func Init(r chi.Router, db *pgxpool.Pool, cfg *configs.Setting, minio *minio.Min
 		r.Post("/", handler.Upload)
 		r.Get("/", handler.GetByUserID)
 		r.Get("/{id}", handler.GetByID)
+		r.Get("/{id}/stream", handler.StatusStream)
 		r.Delete("/{id}", handler.Delete)
 	})
 }

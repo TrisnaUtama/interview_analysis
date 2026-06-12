@@ -2,12 +2,15 @@ package resumes
 
 import (
 	"ai-interview-api/internal/configs"
+	"ai-interview-api/internal/entities"
 	"ai-interview-api/internal/middlewares"
 	"ai-interview-api/pkg/response"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"path/filepath"
 	"strconv"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -48,6 +51,56 @@ func (h *Handler) Upload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Success(w, r, http.StatusAccepted, "success.resume_processing", toResumeResponse(resume))
+}
+
+func (h *Handler) StatusStream(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	userID := r.Context().Value(middlewares.UserIDKey).(string)
+
+	resume, err := h.service.GetByID(r.Context(), id)
+	if err != nil || resume.UserId != userID {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+
+	// SSE headers
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("X-Accel-Buffering", "no")
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "streaming unsupported", http.StatusInternalServerError)
+		return
+	}
+
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-r.Context().Done():
+			return
+		case <-ticker.C:
+			resume, err := h.service.GetByID(r.Context(), id)
+			if err != nil {
+				return
+			}
+
+			data, _ := json.Marshal(map[string]string{
+				"status": string(resume.AnalysisStatus),
+			})
+
+			fmt.Fprintf(w, "data: %s\n\n", data)
+			flusher.Flush()
+
+			if resume.AnalysisStatus == entities.JobAnalysisStatusCompleted ||
+				resume.AnalysisStatus == entities.JobAnalysisStatusFailed {
+				return
+			}
+		}
+	}
 }
 
 func (h *Handler) Callback(w http.ResponseWriter, r *http.Request) {

@@ -79,11 +79,11 @@ export function ResumeCard({ resume }: ResumeCardProps) {
           group
           relative
           h-full
-          min-h-[360px]
+          min-h-90
           overflow-hidden
           rounded-[30px]
-          border border-white/[0.08]
-          bg-white/[0.03]
+          border border-white/8
+          bg-white/3
           backdrop-blur-xl
           flex flex-col
         "
@@ -106,7 +106,7 @@ export function ResumeCard({ resume }: ResumeCardProps) {
         />
 
         {/* accent */}
-        <div className="h-px bg-gradient-to-r from-transparent via-brand/60 to-transparent shrink-0" />
+        <div className="h-px bg-linear-to-r from-transparent via-brand/60 to-transparent shrink-0" />
 
         {/* content */}
         <div className="relative flex flex-col flex-1 p-6">
@@ -122,8 +122,8 @@ export function ResumeCard({ resume }: ResumeCardProps) {
                     relative
                     w-14 h-14
                     rounded-2xl
-                    border border-white/[0.08]
-                    bg-white/[0.04]
+                    border border-white/8
+                    bg-white/4
                     flex items-center justify-center
                     text-brand
                   "
@@ -138,7 +138,7 @@ export function ResumeCard({ resume }: ResumeCardProps) {
                   {parsed?.full_name ?? "Unnamed Resume"}
                 </h3>
 
-                <p className="text-sm text-[#A1A1AA] truncate mt-1">
+                <p className="text-sm text-text-tertiary truncate mt-1">
                   {parsed?.email ?? "No email provided"}
                 </p>
               </div>
@@ -165,7 +165,7 @@ export function ResumeCard({ resume }: ResumeCardProps) {
 
           {/* summary */}
           <div className="mt-6">
-            <p className="text-sm leading-7 text-[#B4B4BC] line-clamp-3 min-h-[84px]">
+            <p className="text-sm leading-7 text-[#B4B4BC] line-clamp-3 min-h-21">
               {parsed?.summary ||
                 "AI parsed resume insights, experience history, skills, and professional profile information."}
             </p>
@@ -173,7 +173,7 @@ export function ResumeCard({ resume }: ResumeCardProps) {
 
           {/* stats */}
           <div className="grid grid-cols-2 gap-3 mt-6">
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3">
+            <div className="rounded-2xl border border-white/6 bg-white/3 p-3">
               <div className="flex items-center gap-2 mb-2">
                 <BriefcaseIcon className="w-4 h-4 text-brand" />
 
@@ -187,7 +187,7 @@ export function ResumeCard({ resume }: ResumeCardProps) {
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3">
+            <div className="rounded-2xl border border-white/6 bg-white/3 p-3">
               <div className="flex items-center gap-2 mb-2">
                 <SparklesIcon className="w-4 h-4 text-brand" />
 
@@ -203,7 +203,7 @@ export function ResumeCard({ resume }: ResumeCardProps) {
           </div>
 
           {/* skills */}
-          <div className="mt-5 min-h-[72px]">
+          <div className="mt-5 min-h-18">
             <div className="flex flex-wrap gap-2">
               {(parsed?.skills ?? []).slice(0, 4).map((skill) => (
                 <div
@@ -211,12 +211,12 @@ export function ResumeCard({ resume }: ResumeCardProps) {
                   className="
                     px-3 py-1.5
                     rounded-xl
-                    border border-white/[0.06]
-                    bg-white/[0.04]
+                    border border-white/6
+                    bg-white/4
                     text-[12px]
                     text-[#D4D4D8]
                     truncate
-                    max-w-[120px]
+                    max-w-30
                   "
                 >
                   {skill}
@@ -235,7 +235,7 @@ export function ResumeCard({ resume }: ResumeCardProps) {
           <div className="flex-1" />
 
           {/* footer */}
-          <div className="pt-5 mt-5 border-t border-white/[0.06]">
+          <div className="pt-5 mt-5 border-t border-white/6">
             <div className="flex items-center justify-between gap-3">
               {/* uploaded */}
               <div className="flex items-center gap-2 text-[#71717A] min-w-0">
@@ -257,8 +257,8 @@ export function ResumeCard({ resume }: ResumeCardProps) {
                   className="
                     h-10 px-4
                     rounded-2xl
-                    border border-white/[0.08]
-                    bg-white/[0.04]
+                    border border-white/8
+                    bg-white/4
                     text-sm font-medium text-white
                     hover:bg-white/[0.07]
                     transition-all

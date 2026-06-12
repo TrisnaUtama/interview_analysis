@@ -15,7 +15,11 @@ import {
   MapPinIcon,
 } from "@heroicons/react/24/outline";
 
-import { useGetOneResume, useDeleteResume } from "../hooks/useResume";
+import {
+  useGetOneResume,
+  useDeleteResume,
+  useResumeStatusStream,
+} from "../hooks/useResume";
 import { DeleteConfirmModal } from "../components/DeleteConfirmModal";
 import { motion } from "framer-motion";
 
@@ -87,13 +91,9 @@ const statusConfig = {
 
 export default function ResumeDetailPage() {
   const { id } = useParams({ from: "/dashboard/resumes/$id" });
-
   const navigate = useNavigate();
-
   const [showDelete, setShowDelete] = useState(false);
-
   const { data: resume, isLoading, isError } = useGetOneResume(id);
-
   const { mutate: deleteResume, isPending: isDeleting } = useDeleteResume();
 
   function handleDelete() {
@@ -464,7 +464,6 @@ export default function ResumeDetailPage() {
             )}
 
             {/* file info */}
-            {/* file info */}
             <Section
               title="Resume Insights"
               icon={<DocumentTextIcon className="w-4 h-4" />}
@@ -484,7 +483,7 @@ export default function ResumeDetailPage() {
                     {format(new Date(resume.created_at), "dd MMM yyyy")}
                   </p>
 
-                  <p className="text-sm text-[#A1A1AA] mt-1">
+                  <p className="text-sm text-text-tertiary mt-1">
                     {format(new Date(resume.created_at), "HH:mm")} •{" "}
                     {formatDistanceToNow(new Date(resume.created_at), {
                       addSuffix: true,
@@ -493,7 +492,7 @@ export default function ResumeDetailPage() {
                 </div>
 
                 {/* updated */}
-                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-5">
+                <div className="rounded-2xl border border-white/6 bg-white/3 p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <SparklesIcon className="w-4 h-4 text-brand" />
 
@@ -506,7 +505,7 @@ export default function ResumeDetailPage() {
                     {format(new Date(resume.updated_at), "dd MMM yyyy")}
                   </p>
 
-                  <p className="text-sm text-[#A1A1AA] mt-1">
+                  <p className="text-sm text-text-tertiary mt-1">
                     {format(new Date(resume.updated_at), "HH:mm")} •{" "}
                     {formatDistanceToNow(new Date(resume.updated_at), {
                       addSuffix: true,
@@ -515,7 +514,7 @@ export default function ResumeDetailPage() {
                 </div>
 
                 {/* parsed sections */}
-                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-5">
+                <div className="rounded-2xl border border-white/6 bg-white/3 p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <DocumentTextIcon className="w-4 h-4 text-brand" />
 
@@ -526,7 +525,7 @@ export default function ResumeDetailPage() {
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-[#A1A1AA]">Experiences</span>
+                      <span className="text-text-tertiary">Experiences</span>
 
                       <span className="text-white font-medium">
                         {p?.experience?.length ?? 0}
@@ -534,7 +533,7 @@ export default function ResumeDetailPage() {
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-[#A1A1AA]">Education</span>
+                      <span className="text-text-tertiary">Education</span>
 
                       <span className="text-white font-medium">
                         {p?.education?.length ?? 0}
@@ -542,7 +541,7 @@ export default function ResumeDetailPage() {
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-[#A1A1AA]">Skills</span>
+                      <span className="text-text-tertiary">Skills</span>
 
                       <span className="text-white font-medium">
                         {p?.skills?.length ?? 0}
@@ -550,7 +549,7 @@ export default function ResumeDetailPage() {
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-[#A1A1AA]">Languages</span>
+                      <span className="text-text-tertiary">Languages</span>
 
                       <span className="text-white font-medium">
                         {p?.languages?.length ?? 0}
@@ -560,7 +559,7 @@ export default function ResumeDetailPage() {
                 </div>
 
                 {/* status */}
-                <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] p-5">
+                <div className="rounded-2xl border border-white/6 bg-white/3 p-5">
                   <div className="flex items-center gap-2 mb-3">
                     <SparklesIcon className="w-4 h-4 text-brand" />
 
@@ -576,12 +575,12 @@ export default function ResumeDetailPage() {
                       {status.label}
                     </span>
 
-                    <span className="text-sm text-[#A1A1AA]">
+                    <span className="text-sm text-text-tertiary">
                       AI parsed successfully
                     </span>
                   </div>
 
-                  <div className="mt-5 h-2 rounded-full bg-white/[0.04] overflow-hidden">
+                  <div className="mt-5 h-2 rounded-full bg-white/4 overflow-hidden">
                     <div
                       className={`
             h-full rounded-full
