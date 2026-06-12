@@ -18,7 +18,6 @@ import {
 import {
   useGetOneResume,
   useDeleteResume,
-  useResumeStatusStream,
 } from "../hooks/useResume";
 import { DeleteConfirmModal } from "../components/DeleteConfirmModal";
 import { motion } from "framer-motion";
