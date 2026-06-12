@@ -22,7 +22,7 @@ export function DeleteConfirmModal({
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-md"
+            className="fixed inset-0 z-100 bg-black/70 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -30,20 +30,20 @@ export function DeleteConfirmModal({
           />
 
           {/* Ambient Glow */}
-          <div className="fixed inset-0 z-[101] pointer-events-none overflow-hidden">
+          <div className="fixed inset-0 z-101 pointer-events-none overflow-hidden">
             <div
               className="
                 absolute top-1/2 left-1/2
-                w-[420px] h-[420px]
+                w-105 h-105
                 -translate-x-1/2 -translate-y-1/2
                 rounded-full blur-3xl opacity-20
-                bg-gradient-to-r from-orange-500 to-purple-600
+                bg-linear-to-r from-orange-500 to-purple-600
               "
             />
           </div>
 
           {/* Modal */}
-          <div className="fixed inset-0 z-[102] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-102 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.96, y: 18 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -64,7 +64,7 @@ export function DeleteConfirmModal({
               "
             >
               {/* Top accent line */}
-              <div className="h-px bg-gradient-to-r from-transparent via-red-400/60 to-transparent" />
+              <div className="h-px bg-linear-to-r from-transparent via-red-400/60 to-transparent" />
 
               {/* Grid texture */}
               <div
@@ -139,7 +139,7 @@ export function DeleteConfirmModal({
                   className="
                     mt-5 rounded-2xl
                     border border-white/6
-                    bg-white/[0.03]
+                    bg-white/3
                     p-4
                   "
                 >
@@ -166,9 +166,9 @@ export function DeleteConfirmModal({
                     className="
                       flex-1 h-11 rounded-2xl
                       border border-white/10
-                      bg-white/[0.03]
+                      bg-white/3
                       text-sm font-medium text-white/70
-                      hover:bg-white/[0.06]
+                      hover:bg-white/6
                       hover:text-white
                       transition-all
                       disabled:opacity-50
@@ -184,7 +184,7 @@ export function DeleteConfirmModal({
                     disabled={isDeleting}
                     className="
                       flex-1 h-11 rounded-2xl
-                      bg-gradient-to-r from-red-500 to-orange-500
+                      bg-linear-to-r from-red-500 to-orange-500
                       text-sm font-semibold text-white
                       shadow-lg shadow-red-500/20
                       hover:opacity-95

@@ -16,10 +16,10 @@ function ResumeCardSkeleton() {
   return (
     <div
       className="
-        h-full min-h-[235px]
-        rounded-[24px]
-        border border-white/[0.08]
-        bg-white/[0.03]
+        h-full min-h-58.75
+        rounded-3xl
+        border border-white/8
+        bg-white/3
         backdrop-blur-xl
         p-4
         animate-pulse
@@ -29,45 +29,45 @@ function ResumeCardSkeleton() {
       {/* header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="w-11 h-11 rounded-2xl bg-white/[0.06]" />
+          <div className="w-11 h-11 rounded-2xl bg-white/6" />
 
           <div className="flex-1">
-            <div className="h-3.5 w-2/3 rounded-full bg-white/[0.06]" />
-            <div className="h-3 w-1/2 rounded-full bg-white/[0.05] mt-2.5" />
+            <div className="h-3.5 w-2/3 rounded-full bg-white/6" />
+            <div className="h-3 w-1/2 rounded-full bg-white/5 mt-2.5" />
           </div>
         </div>
 
-        <div className="w-14 h-5 rounded-full bg-white/[0.06]" />
+        <div className="w-14 h-5 rounded-full bg-white/6" />
       </div>
 
       {/* content */}
       <div className="mt-5 space-y-2">
-        <div className="h-2.5 rounded-full bg-white/[0.04]" />
-        <div className="h-2.5 rounded-full bg-white/[0.04] w-[82%]" />
+        <div className="h-2.5 rounded-full bg-white/4" />
+        <div className="h-2.5 rounded-full bg-white/4 w-[82%]" />
       </div>
 
       {/* stats */}
       <div className="grid grid-cols-2 gap-2 mt-4">
-        <div className="h-14 rounded-2xl bg-white/[0.04]" />
-        <div className="h-14 rounded-2xl bg-white/[0.04]" />
+        <div className="h-14 rounded-2xl bg-white/4" />
+        <div className="h-14 rounded-2xl bg-white/4" />
       </div>
 
       {/* skills */}
       <div className="flex gap-2 mt-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-6 w-12 rounded-xl bg-white/[0.05]" />
+          <div key={i} className="h-6 w-12 rounded-xl bg-white/5" />
         ))}
       </div>
 
       <div className="flex-1" />
 
       {/* footer */}
-      <div className="pt-4 mt-4 border-t border-white/[0.06] flex items-center justify-between">
-        <div className="h-2.5 w-20 rounded-full bg-white/[0.05]" />
+      <div className="pt-4 mt-4 border-t border-white/6 flex items-center justify-between">
+        <div className="h-2.5 w-20 rounded-full bg-white/5" />
 
         <div className="flex gap-2">
-          <div className="h-8 w-16 rounded-xl bg-white/[0.06]" />
-          <div className="h-8 w-8 rounded-xl bg-white/[0.06]" />
+          <div className="h-8 w-16 rounded-xl bg-white/6" />
+          <div className="h-8 w-8 rounded-xl bg-white/6" />
         </div>
       </div>
     </div>
@@ -76,21 +76,14 @@ function ResumeCardSkeleton() {
 
 export default function ResumesPage() {
   const [showUpload, setShowUpload] = useState(false);
-
-  // pagination
   const [page, setPage] = useState(1);
-
   const limit = 9;
-
   const { data, isLoading, isError } = useGetAllResumes({
     page,
     limit,
   });
-
   const resumes: Resume[] = data?.items ?? [];
-
   const meta = data?.meta;
-
   const total = meta?.total_items ?? 0;
   const currentPage = meta?.page ?? page;
   const totalPages = meta?.total_pages ?? 1;
@@ -135,7 +128,7 @@ export default function ResumesPage() {
         />
       </div>
 
-      <div className="relative z-10 max-w-[1450px] mx-auto">
+      <div className="relative z-10 max-w-362.5 mx-auto">
         {/* hero */}
         <motion.div
           initial={{ opacity: 0, y: 14 }}
@@ -144,14 +137,14 @@ export default function ResumesPage() {
           className="
             relative overflow-hidden
             rounded-[28px]
-            border border-white/[0.08]
-            bg-white/[0.03]
+            border border-white/8
+            bg-white/3
             backdrop-blur-2xl
             p-6 md:p-7
             mb-6
           "
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-brand/[0.05] via-transparent to-cyan-400/[0.03]" />
+          <div className="absolute inset-0 bg-linear-to-br from-brand/5 via-transparent to-cyan-400/3" />
 
           <div className="relative flex flex-col xl:flex-row xl:items-end xl:justify-between gap-7">
             {/* left */}
@@ -174,7 +167,7 @@ export default function ResumesPage() {
               </p>
 
               <div className="flex flex-wrap items-center gap-3 mt-5">
-                <div className="h-10 px-4 rounded-2xl border border-white/[0.08] bg-white/[0.03] flex items-center gap-2">
+                <div className="h-10 px-4 rounded-2xl border border-white/8 bg-white/3 flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-emerald-400" />
 
                   <span className="text-sm text-white">
@@ -206,7 +199,7 @@ export default function ResumesPage() {
                 shadow-[0_0_35px_rgba(99,179,237,0.22)]
               "
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-[120%] group-hover:translate-x-[120%] transition-transform duration-1000" />
+              <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/20 to-white/0 -translate-x-[120%] group-hover:translate-x-[120%] transition-transform duration-1000" />
 
               <div className="relative flex items-center gap-2">
                 <svg
@@ -254,7 +247,7 @@ export default function ResumesPage() {
             className="
               rounded-[26px]
               border border-rose-500/10
-              bg-rose-500/[0.03]
+              bg-rose-500/3
               backdrop-blur-2xl
               py-16 px-6 text-center
             "
@@ -276,8 +269,8 @@ export default function ResumesPage() {
             animate={{ opacity: 1, y: 0 }}
             className="
               rounded-[26px]
-              border border-white/[0.08]
-              bg-white/[0.03]
+              border border-white/8
+              bg-white/3
               backdrop-blur-2xl
               px-8 py-20
               text-center
@@ -346,9 +339,9 @@ export default function ResumesPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="
                   mt-7
-                  rounded-[24px]
-                  border border-white/[0.08]
-                  bg-white/[0.03]
+                  rounded-3xl
+                  border border-white/8
+                  bg-white/3
                   backdrop-blur-xl
                   px-4 py-4
                   flex flex-col sm:flex-row
@@ -371,12 +364,12 @@ export default function ResumesPage() {
                     disabled={currentPage === 1}
                     className="
                       h-10 px-4 rounded-2xl
-                      border border-white/[0.08]
-                      bg-white/[0.03]
+                      border border-white/8
+                      bg-white/3
                       text-sm text-white
                       flex items-center gap-2
                       transition-all
-                      hover:bg-white/[0.05]
+                      hover:bg-white/5
                       disabled:opacity-40
                       disabled:cursor-not-allowed
                     "
@@ -387,7 +380,7 @@ export default function ResumesPage() {
 
                   <div
                     className="
-                      h-10 min-w-[48px]
+                      h-10 min-w-12
                       px-4 rounded-2xl
                       border border-brand/20
                       bg-brand/10
@@ -403,12 +396,12 @@ export default function ResumesPage() {
                     disabled={currentPage === totalPages}
                     className="
                       h-10 px-4 rounded-2xl
-                      border border-white/[0.08]
-                      bg-white/[0.03]
+                      border border-white/8
+                      bg-white/3
                       text-sm text-white
                       flex items-center gap-2
                       transition-all
-                      hover:bg-white/[0.05]
+                      hover:bg-white/5
                       disabled:opacity-40
                       disabled:cursor-not-allowed
                     "
