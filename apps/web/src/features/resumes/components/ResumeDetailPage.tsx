@@ -376,13 +376,13 @@ export default function ResumeDetailPage() {
                         key={i}
                         className="relative pl-5 border-l border-brand/20"
                       >
-                        <div className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-brand" />
+                        <div className="absolute -left-1.25 top-1.5 w-2.5 h-2.5 rounded-full bg-brand" />
 
                         <h3 className="text-sm font-semibold text-white">
                           {edu.degree}
                         </h3>
 
-                        <p className="text-sm text-[#A1A1AA] mt-1">
+                        <p className="text-sm text-text-tertiary mt-1">
                           {edu.institution}
                         </p>
 
