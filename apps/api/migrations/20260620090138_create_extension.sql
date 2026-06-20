@@ -1,12 +1,9 @@
 -- +goose Up
 -- +goose StatementBegin
-ALTER TABLE job_keywords
-ADD COLUMN type VARCHAR(100);
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- +goose StatementEnd
-
 
 -- +goose Down
 -- +goose StatementBegin
-ALTER TABLE job_keywords
-DROP COLUMN IF EXISTS type;
+DROP EXTENSION IF EXISTS "uuid-ossp";
 -- +goose StatementEnd
